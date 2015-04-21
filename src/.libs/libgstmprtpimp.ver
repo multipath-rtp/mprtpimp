@@ -1,0 +1,5 @@
+{ global:
+gst_mprtp_receiver_get_type;
+gst_mprtp_sender_get_type;
+gst_plugin_desc;
+local: *; };

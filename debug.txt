@@ -1,0 +1,124 @@
+mprtpsender name=mprtps rtpbin name=rtpbin videotestsrc is-live=1 ! video/x-raw,width=352,height=288,framerate=15/1 ! avenc_h263p ! rtph263ppay ! rtpbin.send_rtp_sink_2 rtpbin.send_rtp_src_2 ! mprtps.mprtp_sink mprtps.mprtp_src_1 ! queue ! udpsink port=5000 host=127.0.0.1 ts-offset=0 name=vrtpsink mprtps.mprtp_src_2 ! queue ! udpsink port=5010 host=127.0.0.2 ts-offset=0 name=vrtpsink2 rtpbin.send_rtcp_src_2 ! udpsink port=5001 host=127.0.0.1 sync=false async=false name=vrtcpsink udpsrc port=5005 name=vrtpsrc ! rtpbin.recv_rtcp_sink_2
+Requested pad name: mprtp_src_1Requested pad name: mprtp_src_2Setting pipeline to PAUSED ...
+Pipeline is live and does not need PREROLL ...
+/GstPipeline:pipeline0/GstVideoTestSrc:videotestsrc0.GstPad:src: caps = "video/x-raw\,\ format\=\(string\)I420\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ pixel-aspect-ratio\=\(fraction\)1/1\,\ interlace-mode\=\(string\)progressive"
+/GstPipeline:pipeline0/GstCapsFilter:capsfilter0.GstPad:src: caps = "video/x-raw\,\ format\=\(string\)I420\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ pixel-aspect-ratio\=\(fraction\)1/1\,\ interlace-mode\=\(string\)progressive"
+Setting pipeline to PLAYING ...
+New clock: GstSystemClock
+/GstPipeline:pipeline0/avenc_h263p:avenc_h263p0.GstPad:sink: caps = "video/x-raw\,\ format\=\(string\)I420\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ pixel-aspect-ratio\=\(fraction\)1/1\,\ interlace-mode\=\(string\)progressive"
+/GstPipeline:pipeline0/GstCapsFilter:capsfilter0.GstPad:sink: caps = "video/x-raw\,\ format\=\(string\)I420\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ pixel-aspect-ratio\=\(fraction\)1/1\,\ interlace-mode\=\(string\)progressive"
+----10254----1
+/GstPipeline:pipeline0/avenc_h263p:avenc_h263p0.GstPad:src: caps = "video/x-h263\,\ variant\=\(string\)itu\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ h263version\=\(string\)h263p\,\ annex-f\=\(boolean\)true\,\ annex-j\=\(boolean\)true\,\ annex-i\=\(boolean\)true\,\ annex-t\=\(boolean\)true\,\ pixel-aspect-ratio\=\(fraction\)1/1"
+/GstPipeline:pipeline0/GstRtpH263PPay:rtph263ppay0.GstPad:src: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)83381978\,\ timestamp-offset\=\(uint\)437423231\,\ seqnum-offset\=\(uint\)7947"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtp_sink_2.GstProxyPad:proxypad1: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)83381978\,\ timestamp-offset\=\(uint\)437423231\,\ seqnum-offset\=\(uint\)7947"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin/GstRtpSession:rtpsession0.GstPad:send_rtp_src: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)83381978\,\ timestamp-offset\=\(uint\)437423231\,\ seqnum-offset\=\(uint\)7947"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtp_src_2: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)83381978\,\ timestamp-offset\=\(uint\)437423231\,\ seqnum-offset\=\(uint\)7947"
+----12814----/GstPipeline:pipeline0/GstMprtpSender:mprtps.GstPad:mprtp_src_1: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)83381978\,\ timestamp-offset\=\(uint\)437423231\,\ seqnum-offset\=\(uint\)7947"
+/GstPipeline:pipeline0/GstQueue:queue0.GstPad:sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)83381978\,\ timestamp-offset\=\(uint\)437423231\,\ seqnum-offset\=\(uint\)7947"
+/GstPipeline:pipeline0/GstQueue:queue0.GstPad:sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)83381978\,\ timestamp-offset\=\(uint\)437423231\,\ seqnum-offset\=\(uint\)7947"
+/GstPipeline:pipeline0/GstQueue:queue0.GstPad:sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)83381978\,\ timestamp-offset\=\(uint\)437423231\,\ seqnum-offset\=\(uint\)7947"
+1
+/GstPipeline:pipeline0/GstMprtpSender:mprtps.GstPad:mprtp_sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)83381978\,\ timestamp-offset\=\(uint\)437423231\,\ seqnum-offset\=\(uint\)7947"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtp_src_2.GstProxyPad:proxypad0: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)83381978\,\ timestamp-offset\=\(uint\)437423231\,\ seqnum-offset\=\(uint\)7947"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin/GstRtpSession:rtpsession0.GstPad:send_rtp_sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)83381978\,\ timestamp-offset\=\(uint\)437423231\,\ seqnum-offset\=\(uint\)7947"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtp_sink_2: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)83381978\,\ timestamp-offset\=\(uint\)437423231\,\ seqnum-offset\=\(uint\)7947"
+/GstPipeline:pipeline0/GstRtpH263PPay:rtph263ppay0.GstPad:sink: caps = "video/x-h263\,\ variant\=\(string\)itu\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ h263version\=\(string\)h263p\,\ annex-f\=\(boolean\)true\,\ annex-j\=\(boolean\)true\,\ annex-i\=\(boolean\)true\,\ annex-t\=\(boolean\)true\,\ pixel-aspect-ratio\=\(fraction\)1/1"
+/GstPipeline:pipeline0/GstRtpH263PPay:rtph263ppay0: timestamp = 437425543
+/GstPipeline:pipeline0/GstRtpH263PPay:rtph263ppay0: seqnum = 7947
+----17934----1
+4I am in1
+4I am in2
+4I am in3
+4I am in4
+4I am in5
+4I am in6
+4I am in7
+4I am in8
+4I am in9
+4I am in10
+4I am in11
+4I am in12
+4I am in13
+4I am in14
+4I am in15
+4I am in16
+4I am in17
+4I am in18
+4I am in19
+4I am in20
+4I am in21
+4I am in22
+4I am in23
+4I am in24
+4I am in25
+4I am in26
+4I am in27
+4I am in28
+4I am in29
+4I am in30
+4I am in31
+4I am in32
+4I am in33
+4I am in34
+4I am in35
+4I am in36
+4I am in37
+4I am in38
+4I am in39
+4I am in40
+4I am in41
+4I am in42
+4I am in43
+4I am in44
+4I am in45
+4I am in46
+4I am in47
+4I am in48
+4I am in49
+4I am in50
+4I am in51
+4I am in52
+4I am in53
+4I am in54
+4I am in55
+4I am in56
+4I am in57
+4I am in58
+4I am in59
+4I am in60
+4I am in61
+4I am in62
+4I am in63
+4I am in64
+4I am in65
+4I am in66
+4I am in67
+4I am in68
+4I am in69
+4I am in70
+4I am in71
+4I am in72
+4I am in73
+4I am in74
+4I am in75
+4I am in76
+4I am in77
+4I am in78
+4I am in79
+4I am in80
+4I am in81
+4I am in82
+/GstPipeline:pipeline0/GstRtpBin:rtpbin/GstRtpSession:rtpsession0.GstPad:send_rtcp_src: caps = application/x-rtcp
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtcp_src_2: caps = application/x-rtcp
+/GstPipeline:pipeline0/GstUDPSink:vrtcpsink.GstPad:sink: caps = application/x-rtcp
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtcp_src_2.GstProxyPad:proxypad2: caps = application/x-rtcp
+handling interrupt.
+Interrupt: Stopping pipeline ...
+Execution ended after 0:00:11.609854395
+Setting pipeline to PAUSED ...
+Setting pipeline to READY ...
+3I am in83
+3I am in84
+3I am in85
+Setting pipeline to NULL ...
+Freeing pipeline ...
