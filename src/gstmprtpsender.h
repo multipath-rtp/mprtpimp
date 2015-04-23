@@ -22,6 +22,7 @@
 
 #include <gst/gst.h>
 #include <gst/rtp/gstrtpbuffer.h>
+#include "mprtplibs.h"
 G_BEGIN_DECLS
 
 #define GST_TYPE_MPRTP_SENDER \
@@ -38,13 +39,14 @@ G_BEGIN_DECLS
 typedef struct _GstMprtpSender GstMprtpSender;
 typedef struct _GstMprtpSenderClass GstMprtpSenderClass;
 typedef struct _SchNode SchNode;
+typedef struct _MPRTPSenderSubflow MPRTPSenderSubflow;
 
 struct _GstMprtpSender {
   GstElement element;
 
   GstPad *sinkpad;
   GSList *subflows;
-  GstPad *active_srcpad;
+  MPRTPSenderSubflow *selected_subflow;
   GstSegment segment;
 
   //Necessary for packet scheduling
@@ -62,6 +64,16 @@ struct _GstMprtpSenderClass {
   GstElementClass parent_class;
 };
 
+
+
+struct _MPRTPSenderSubflow{
+	guint16 id;
+    guint16 seq_num;
+    guint16 sent;
+    GstPad* srcpad;
+    guint32 bw;
+    MPRTP_Congestion congestion;
+};
 
 G_GNUC_INTERNAL GType gst_mprtp_sender_get_type (void);
 

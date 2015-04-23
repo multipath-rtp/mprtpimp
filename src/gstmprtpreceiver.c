@@ -67,7 +67,7 @@ GST_STATIC_PAD_TEMPLATE ("mprtcp_src",
 //-------------------- LOCAL TYPE DEFINITIONS ------------------
 //---------------------------------------------------------------
 
-typedef struct _Subflow Subflow;
+typedef struct _Subflow MPRTPReceiverSubflow;
 
 enum
 {
@@ -83,9 +83,9 @@ enum
 
 struct _Subflow{
 	guint16 id;
+	guint16 received;
     guint16 seq_num;
     guint16 sent;
-    GstPad* srcpad;
 };
 
 
@@ -107,10 +107,11 @@ static gboolean gst_mprtp_receiver_event (GstPad * pad, GstObject * parent,
 static gboolean gst_mprtp_receiver_query (GstPad * pad, GstObject * parent,
     GstQuery * query);
 
-static void _subflow_dtor(Subflow* target);
-static void _dispose_subflow(Subflow* target);
-static Subflow* _make_subflow(guint16 id, GstPad* srcpad);
-static Subflow* _subflow_ctor();
+static void _subflow_dtor(MPRTPReceiverSubflow* target);
+static void _dispose_subflow(MPRTPReceiverSubflow* target);
+static MPRTPReceiverSubflow* _make_subflow(guint16 id);
+static MPRTPReceiverSubflow* _subflow_ctor();
+static void _print_rtp_packet_info(GstRTPBuffer *rtp);
 
 static void
 gst_mprtp_receiver_class_init (GstMprtpReceiverClass * klass)
@@ -153,7 +154,7 @@ gst_mprtp_receiver_init (GstMprtpReceiver * mprtpr)
   gst_element_add_pad (GST_ELEMENT (mprtpr), mprtpr->srcpad);
 
   /* sinkpad management */
-  mprtpr->subflows = g_hash_table_new_full(g_int_hash, g_int_equal, g_free, g_free);
+  mprtpr->subflows = g_hash_table_new (g_direct_hash, g_direct_equal);
   mprtpr->RTPBuffer = (GstRTPBuffer) GST_RTP_BUFFER_INIT;
 }
 
@@ -164,7 +165,7 @@ gst_mprtp_receiver_reset (GstMprtpReceiver * mprtpr)
 }
 
 static void _mprtp_receiver_subflow_dispose(gpointer key, gpointer value, gpointer user_data) {
-	Subflow *subflow = (Subflow*) value;
+	//MPRTPReceiverSubflow *subflow = (MPRTPReceiverSubflow*) value;
 	//unref something...
 }
 
@@ -225,17 +226,13 @@ GstPad* _request_mprtp_sinkpad(GstElement * element,
 {
 	GstPad *sinkpad;
 	GstMprtpReceiver *mprtpr;
-	Subflow* subflow;
+	MPRTPReceiverSubflow* subflow;
 	guint16 *subflow_id;
-g_print("----Adding pad\n");
+
 	mprtpr = GST_MPRTP_RECEIVER (element);
 	GST_OBJECT_LOCK (mprtpr);
 
-	subflow_id = g_new0(guint16, 1);
-	sscanf(name, "mprtp_sink_%hu", subflow_id);
 	sinkpad = gst_pad_new_from_template (templ, name);
-	subflow = _make_subflow(subflow_id, sinkpad);
-	g_hash_table_insert(mprtpr->subflows, subflow_id, subflow);
 
 	GST_OBJECT_UNLOCK (mprtpr);
 
@@ -284,7 +281,7 @@ gst_mprtp_receiver_request_new_pad (GstElement * element,
   GstMprtpReceiver *mprtpr;
   mprtpr = GST_MPRTP_RECEIVER (element);
   klass = GST_ELEMENT_GET_CLASS (element);
-  g_print("R::::%s", templ->name_template);
+
   if(templ == gst_element_class_get_pad_template (klass, "mprtp_sink_%u")){
 	  result = _request_mprtp_sinkpad(element, templ, name, caps);
   }else if(templ == gst_element_class_get_pad_template (klass, "mprtcprr_src")){
@@ -310,63 +307,75 @@ gst_mprtp_receiver_release_pad (GstElement * element, GstPad * pad)
   gst_element_remove_pad (GST_ELEMENT_CAST (mprtpr), pad);
 }
 
-
-static void _print_rtp_packet_info(GstRTPBuffer *rtp)
+static void _reset_subflow(MPRTPReceiverSubflow *subflow)
 {
-	g_print(
-   "0               1               2               3          \n"
-   "0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 \n"
-   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
-   "|%3d|%1d|%1d|%7d|%1d|%13d|%31d|\n"
-   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
-   "|%63lu|\n"
-   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
-   "|%63lu|\n"
-   "+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n"
-   "|       0xBE    |    0xDE       |           length=N-1          |\n"
-   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
-   "|   ID  |  LEN  |  MPID |LENGTH |       MPRTP header data       |\n"
-   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +\n"
-   "|                             ....                              |\n"
-   "+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n"
-   "|                         RTP payload                           |\n"
-   "|                             ....                              |\n"
-   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n",
-			gst_rtp_buffer_get_version(rtp),
-			gst_rtp_buffer_get_padding(rtp),
-			gst_rtp_buffer_get_extension(rtp),
-			gst_rtp_buffer_get_csrc_count(rtp),
-			gst_rtp_buffer_get_marker(rtp),
-			gst_rtp_buffer_get_payload_type(rtp),
-			gst_rtp_buffer_get_seq(rtp),
-			gst_rtp_buffer_get_timestamp(rtp),
-			gst_rtp_buffer_get_ssrc(rtp)
-			);
+	subflow->received = 0;
+	subflow->seq_num = 0;
+	subflow->sent = 0;
 }
 
-static void _processing_mprtp_packet(GstMprtpReceiver *mprtpr, GstBuffer * buf)
+static void _add_subflow(GHashTable *table, guint16 subflow_id)
 {
-	GstRTPBuffer *rtp = &mprtpr->RTPBuffer;
-	if (G_UNLIKELY (!gst_rtp_buffer_map(buf, GST_MAP_READ, rtp))){
+	MPRTPReceiverSubflow subflow;
+	_reset_subflow(&subflow);
+	subflow.id = subflow_id;
+	g_hash_table_insert(table, GUINT_TO_POINTER(subflow_id), &subflow);
+}
+
+//must be called with object lock
+static void _processing_mprtp_packet(GstMprtpReceiver *mprtpr, GstRTPBuffer *rtp)
+{
+	gpointer pointer = NULL;
+	MpRtpHeaderExtSubflowInfos *subflow_infos = NULL;
+	MPRTPReceiverSubflow *subflow;
+	guint size;
+
+	if(!gst_rtp_buffer_get_extension(rtp)){
+		GST_WARNING_OBJECT(mprtpr, "The received buffer extension bit is 0 thus it is not an MPRTP packet.");
 		return;
 	}
+	//_print_rtp_packet_info(rtp);
 
-	_print_rtp_packet_info(rtp);
-	gst_rtp_buffer_unmap(rtp);
+	if(!gst_rtp_buffer_get_extension_onebyte_header(rtp, MPRTP_EXT_HEADER_ID, 0, &pointer, &size)){
+		GST_WARNING_OBJECT(mprtpr, "The received buffer extension is not processable");
+		return;
+	}
+	subflow_infos = (MpRtpHeaderExtSubflowInfos*) pointer;
+	if(!g_hash_table_contains(mprtpr->subflows, GUINT_TO_POINTER(subflow_infos->subflow_id))){
+		GST_LOG_OBJECT(mprtpr, "New subflow is added with id: %d", subflow_infos->subflow_id);
+		_add_subflow(mprtpr->subflows, subflow_infos->subflow_id);
+	}
+	pointer = g_hash_table_lookup(mprtpr->subflows, GUINT_TO_POINTER(subflow_infos->subflow_id));
+	subflow = (MPRTPReceiverSubflow*) pointer;
+	if(subflow == NULL){
+		GST_WARNING_OBJECT(mprtpr, "The subflow lookup was not successful");
+		return;
+	}
+	//refreshing the stats
+	++subflow->received;
 }
 
 static GstFlowReturn
 gst_mprtp_receiver_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
 {
-  GstFlowReturn result;
   GstMprtpReceiver *mprtpr;
-  //GstClockTime position, duration;
+  GstRTPBuffer rtp = GST_RTP_BUFFER_INIT;
 
+  if (G_UNLIKELY (!gst_rtp_buffer_map(buf, GST_MAP_READ, &rtp))){
+    GST_WARNING_OBJECT(mprtpr, "The received Buffer is not readable");
+    return gst_pad_push (mprtpr->srcpad, buf);
+  }
   mprtpr = GST_MPRTP_RECEIVER (parent);
-  _processing_mprtp_packet(mprtpr, buf);
-  result = gst_pad_push (mprtpr->srcpad, buf);
 
-  return result;
+  GST_OBJECT_LOCK(mprtpr);
+
+  _processing_mprtp_packet(mprtpr, &rtp);
+  //_print_rtp_packet_info(&rtp);
+
+  GST_OBJECT_UNLOCK(mprtpr);
+  gst_rtp_buffer_unmap(&rtp);
+
+  return gst_pad_push (mprtpr->srcpad, buf);
 }
 
 static GstStateChangeReturn
@@ -451,28 +460,80 @@ gst_mprtp_receiver_query (GstPad * pad, GstObject * parent, GstQuery * query)
 //-------- PRIVATE FUNCTIONS DEFINITIONS ------------------------
 //---------------------------------------------------------------
 
-Subflow* _subflow_ctor()
+MPRTPReceiverSubflow* _subflow_ctor()
 {
-	Subflow* result;
-	result = (Subflow*) g_malloc0(sizeof(Subflow));
+	MPRTPReceiverSubflow* result;
+	result = (MPRTPReceiverSubflow*) g_malloc0(sizeof(MPRTPReceiverSubflow));
 	return result;
 }
 
-Subflow* _make_subflow(guint16 id, GstPad* srcpad)
+MPRTPReceiverSubflow* _make_subflow(guint16 id)
 {
-	Subflow* result = _subflow_ctor();
+	MPRTPReceiverSubflow* result = _subflow_ctor();
 	result->id = id;
-	result->srcpad = srcpad;
 	return result;
 }
 
-void _dispose_subflow(Subflow* target)
+void _dispose_subflow(MPRTPReceiverSubflow* target)
 {
 
 }
 
-void _subflow_dtor(Subflow* target)
+void _subflow_dtor(MPRTPReceiverSubflow* target)
 {
 	g_free(target);
 }
 
+
+
+void _print_rtp_packet_info(GstRTPBuffer *rtp)
+{
+	gboolean extended;
+	g_print(
+   "0               1               2               3          \n"
+   "0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 \n"
+   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
+   "|%3d|%1d|%1d|%7d|%1d|%13d|%31d|\n"
+   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
+   "|%63lu|\n"
+   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
+   "|%63lu|\n",
+			gst_rtp_buffer_get_version(rtp),
+			gst_rtp_buffer_get_padding(rtp),
+			extended = gst_rtp_buffer_get_extension(rtp),
+			gst_rtp_buffer_get_csrc_count(rtp),
+			gst_rtp_buffer_get_marker(rtp),
+			gst_rtp_buffer_get_payload_type(rtp),
+			gst_rtp_buffer_get_seq(rtp),
+			gst_rtp_buffer_get_timestamp(rtp),
+			gst_rtp_buffer_get_ssrc(rtp)
+			);
+
+	if(extended){
+		guint16 bits;
+		guint8 *pdata;
+		guint wordlen;
+		gulong index = 0;
+		guint count = 0;
+
+		gst_rtp_buffer_get_extension_data (rtp, &bits, (gpointer) & pdata, &wordlen);
+
+
+		g_print(
+	   "+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n"
+	   "|0x%-29X|%31d|\n"
+	   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n",
+	   bits,
+	   wordlen);
+
+	   for(index = 0; index < wordlen; ++index){
+		 g_print("|0x%-5X = %5d|0x%-5X = %5d|0x%-5X = %5d|0x%-5X = %5d|\n"
+				 "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n",
+				 *(pdata+index*4), *(pdata+index*4),
+				 *(pdata+index*4+1),*(pdata+index*4+1),
+				 *(pdata+index*4+2),*(pdata+index*4+2),
+				 *(pdata+index*4+3),*(pdata+index*4+3));
+	  }
+	  g_print("+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n");
+	}
+}

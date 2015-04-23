@@ -66,8 +66,6 @@ GST_STATIC_PAD_TEMPLATE ("mprtcp_src",
 //-------------------- LOCAL TYPE DEFINITIONS ------------------
 //---------------------------------------------------------------
 
-typedef struct _Subflow Subflow;
-
 enum
 {
   PROP_0,
@@ -80,27 +78,13 @@ enum
   LAST_SIGNAL
 };
 
-typedef enum
-{
-  MPRTP_SUBFLOW_CONGESTED       = 1,
-  MPRTP_SUBFLOW_NON_CONGESTED   = 2,
-  MPRTP_SUBFLOW_MIDLY_CONGESTED = 3
-}Congestion;
 
-struct _Subflow{
-	guint16 id;
-    guint16 seq_num;
-    guint16 sent;
-    GstPad* srcpad;
-    guint32 bw;
-    Congestion congestion;
-};
 
 
 struct _SchNode
 {
 	SchNode *left, *right, *next;
-	Subflow* value;
+	MPRTPSenderSubflow* value;
 };
 
 static void gst_mprtp_sender_dispose (GObject * object);
@@ -120,21 +104,23 @@ static gboolean gst_mprtp_sender_event (GstPad * pad, GstObject * parent,
     GstEvent * event);
 static gboolean gst_mprtp_sender_query (GstPad * pad, GstObject * parent,
     GstQuery * query);
-static GstPad* gst_mprtp_sender_switch (GstMprtpSender * mprtps);
+static MPRTPSenderSubflow* _select_subflow (GstMprtpSender * mprtps, GstRTPBuffer *rtp);
 
-static void _subflow_dtor(Subflow* target);
-static void _dispose_subflow(Subflow* target);
-static Subflow* _make_subflow(guint16 id, GstPad* srcpad);
-static Subflow* _subflow_ctor();
+static void _subflow_dtor(MPRTPSenderSubflow* target);
+static void _dispose_subflow(MPRTPSenderSubflow* target);
+static MPRTPSenderSubflow* _make_subflow(guint16 id, GstPad* srcpad);
+static MPRTPSenderSubflow* _subflow_ctor();
 
 static SchNode* _schnode_ctor();
 static void _schnode_rdtor(SchNode* target);
-static SchNode* _schtree_insert(Subflow* value,
+static SchNode* _schtree_insert(MPRTPSenderSubflow* value,
 		SchNode *node, guint32* target, guint32 current);
 static SchNode* _schtree_setnext(SchNode* root);
-static SchNode* _schtree_build(GSList* subflows, Congestion congestion);
+static SchNode* _schtree_build(GSList* subflows, MPRTP_Congestion congestion);
 static void _refresh_schtree(GstMprtpSender* mprtps);
 void _recalculate_congestion(GstMprtpSender* mprtps);
+static MPRTPSenderSubflow* _switch_subflow_in_schtree (GstMprtpSender * mprtps, SchNode *category);
+static void _print_rtp_packet_info(GstRTPBuffer *rtp);
 
 static void
 gst_mprtp_sender_class_init (GstMprtpSenderClass * klass)
@@ -185,7 +171,7 @@ gst_mprtp_sender_init (GstMprtpSender * mprtps)
   gst_element_add_pad (GST_ELEMENT (mprtps), mprtps->sinkpad);
 
   /* srcpad management */
-  mprtps->active_srcpad = NULL;
+  mprtps->selected_subflow = NULL;
   gst_segment_init (&mprtps->segment, GST_FORMAT_UNDEFINED);
   mprtps->subflows = NULL;
   GstRTPBuffer rtpbuf_init =  GST_RTP_BUFFER_INIT;
@@ -198,13 +184,13 @@ static void
 gst_mprtp_sender_reset (GstMprtpSender * mprtps)
 {
   GSList *it;
-  Subflow *subflow;
+  MPRTPSenderSubflow *subflow;
   for(it = mprtps->subflows; it != NULL; it = it->next){
-	  subflow = (Subflow*) it->data;
+	  subflow = (MPRTPSenderSubflow*) it->data;
 	  gst_object_unref(subflow);
   }
   g_slist_free(mprtps->subflows);
-  gst_object_unref(mprtps->active_srcpad);
+  gst_object_unref(mprtps->selected_subflow);
   gst_segment_init (&mprtps->segment, GST_FORMAT_UNDEFINED);
 }
 
@@ -244,23 +230,6 @@ gst_mprtp_sender_get_property (GObject * object, guint prop_id,
   }
 }
 
-static GstPad *
-gst_mprtp_sender_get_active (GstMprtpSender * mprtps)
-{
-  GstPad *active = NULL;
-
-  GST_OBJECT_LOCK (mprtps);
-  if (mprtps->active_srcpad == NULL)
-	  active = gst_mprtp_sender_switch(mprtps);
-  if(active == NULL){
-	  goto mprtp_sender_get_active_done;
-  }
-  active = gst_object_ref (mprtps->active_srcpad);
-
-mprtp_sender_get_active_done:
-  GST_OBJECT_UNLOCK (mprtps);
-  return active;
-}
 static gboolean
 forward_sticky_events (GstPad * pad, GstEvent ** event, gpointer user_data)
 {
@@ -279,7 +248,7 @@ GstPad* _request_mprtp_srcpad(GstElement * element,
 {
 	GstPad *srcpad;
 	GstMprtpSender *mprtps;
-	Subflow* subflow;
+	MPRTPSenderSubflow* subflow;
 	guint16 subflow_id;
 
 	mprtps = GST_MPRTP_SENDER (element);
@@ -300,8 +269,8 @@ GstPad* _request_mprtp_srcpad(GstElement * element,
 
 	gst_element_add_pad (GST_ELEMENT (mprtps), srcpad);
 
-	if(mprtps->active_srcpad == NULL){
-		mprtps->active_srcpad = srcpad;
+	if(mprtps->selected_subflow == NULL){
+		mprtps->selected_subflow = subflow;
 	}
 	return srcpad;
 }
@@ -361,223 +330,126 @@ gst_mprtp_sender_release_pad (GstElement * element, GstPad * pad)
 
   gst_element_remove_pad (GST_ELEMENT_CAST (mprtps), pad);
 }
-
-
-GstPad* gst_mprtp_sender_switch (GstMprtpSender * mprtps)
+SchNode* _select_category(GstMprtpSender *mprtps, GstRTPBuffer *rtp)
 {
-  GstPad *res;
+	SchNode* selected = NULL;
+	if(mprtps->nctree == mprtps->mctree && mprtps->mctree == NULL){
+		_recalculate_congestion(mprtps);
+	}
+	//the category choose algorithm comes here
+	selected = mprtps->nctree;
+	return selected;
+}
+
+//must be called with lock on mprtps and rtp must be mapped
+static MPRTPSenderSubflow*
+_select_subflow_for_special_cases(GstMprtpSender * mprtps, GstRTPBuffer *rtp)
+{
+	MPRTPSenderSubflow *result = NULL;
+	//implement special case subflow calls here.
+	return result;
+}
+
+//must be called with lock on mprtps and rtp must be mapped
+MPRTPSenderSubflow* _select_subflow(GstMprtpSender * mprtps, GstRTPBuffer *rtp)
+{
+	MPRTPSenderSubflow *result = mprtps->selected_subflow;
+	SchNode *category = NULL;
+	//we need to decide the category based on the rtp
+	//need to decide the category here.
+	category = _select_category(mprtps, rtp);
+	if(category == NULL){
+		GST_WARNING_OBJECT(mprtps, "No available category for subflows!");
+		return NULL;
+	}
+	if(gst_rtp_buffer_get_extension(rtp)){
+		result = _switch_subflow_in_schtree(mprtps, category);
+	}
+
+	return result;
+}
+//must be called with object lock, the category must not be null.
+MPRTPSenderSubflow* _switch_subflow_in_schtree (GstMprtpSender * mprtps, SchNode *category)
+{
+  SchNode *node;
+  MPRTPSenderSubflow *result = NULL;
+  gint8 count;
   //GstEvent *ev = NULL;
   //GstSegment *seg = NULL;
 
   /* Switch */
-  //GST_OBJECT_LOCK (GST_OBJECT (mprtps));
-  GST_INFO_OBJECT (mprtps, "switching to pad");
-  res = mprtps->active_srcpad;
-
-//  if (gst_pad_is_linked (mprtps->subflows)) {
-//    mprtps->active_srcpad = mprtps->subflows;
-//    res = TRUE;
-//  }
-//  mprtps->subflows = NULL;
-//  GST_OBJECT_UNLOCK (GST_OBJECT (mprtps));
-//
-//  /* Send SEGMENT event and latest buffer if switching succeeded
-//   * and we already have a valid segment configured */
-//  if (res) {
-//    gst_pad_sticky_events_foreach (mprtps->sinkpad, forward_sticky_events,
-//        mprtps->active_srcpad);
-//
-//    /* update segment if required */
-//    if (mprtps->segment.format != GST_FORMAT_UNDEFINED) {
-//      /* Send SEGMENT to the pad we are going to switch to */
-//      seg = &mprtps->segment;
-//      ev = gst_event_new_segment (seg);
-//
-//      if (!gst_pad_push_event (mprtps->active_srcpad, ev)) {
-//        GST_WARNING_OBJECT (mprtps,
-//            "newsegment handling failed in %" GST_PTR_FORMAT,
-//            mprtps->active_srcpad);
-//      }
-//    }
-//  } else {
-//    GST_WARNING_OBJECT (mprtps, "switch failed, pad not linked");
-//  }
-
-  return res;
-}
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-
-#elif G_BYTE_ORDER == G_BIG_ENDIAN
-
-#endif
-
-typedef struct _MpRtpHeaderExtension MpRtpHeaderExtension;
-struct _MpRtpHeaderExtension{
-	guint16  BEDE;
-	guint16  length;
-};
-
-static void _print_rtp_packet_info(GstRTPBuffer *rtp)
-{
-	gboolean extended;
-	gint index;
-	guint32 *word;
-	gpointer payload;
-	g_print(
-   "0               1               2               3          \n"
-   "0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 \n"
-   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
-   "|%3d|%1d|%1d|%7d|%1d|%13d|%31d|\n"
-   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
-   "|%63lu|\n"
-   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
-   "|%63lu|\n",
-			gst_rtp_buffer_get_version(rtp),
-			gst_rtp_buffer_get_padding(rtp),
-			extended = gst_rtp_buffer_get_extension(rtp),
-			gst_rtp_buffer_get_csrc_count(rtp),
-			gst_rtp_buffer_get_marker(rtp),
-			gst_rtp_buffer_get_payload_type(rtp),
-			gst_rtp_buffer_get_seq(rtp),
-			gst_rtp_buffer_get_timestamp(rtp),
-			gst_rtp_buffer_get_ssrc(rtp)
-			);
-
-	if(extended){
-	g_print(
-	   "+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n"
-	   "|       0xBE    |    0xDE       |           length=N-1          |\n"
-	   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
-	   "|   ID  |  LEN  |  MPID |LENGTH |       MPRTP header data       |\n"
-	   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +\n"
-	   "|                             ....                              |\n"
-
-	   );
-	}
-
-	payload = gst_rtp_buffer_get_payload(rtp);
-	g_print("+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n");
-	for(index = 0; index < 400; ++index){
-		word = (guint32*) payload + (index * 4);
-		g_print("%X", word);
-	}
-	g_print("+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n");
-
-}
-
-static GstBuffer* _extending_buffer(GstMprtpSender* mprtps, GstBuffer* buf);
-GstBuffer* _extending_buffer(GstMprtpSender* mprtps, GstBuffer* buf)
-{
-	GstRTPBuffer old_rtp = GST_RTP_BUFFER_INIT;
-	GstRTPBuffer new_rtp = GST_RTP_BUFFER_INIT;
-	GstBuffer *outbuf;
-	gst_rtp_buffer_map(outbuf, GST_MAP_READ, &old_rtp);
-	outbuf = gst_buffer_make_writable (buf);
-	if (G_UNLIKELY (!gst_rtp_buffer_map(outbuf, GST_MAP_READWRITE, &new_rtp))){
-		return buf;
-	}
-	gst_rtp_buffer_set_extension(&new_rtp, 1);
-	gst_rtp_buffer_set_packet_len(new_rtp, gst_rtp_buffer_get_payload_len(old_rtp));
-
-	gst_rtp_buffer_unmap(&new_rtp);
-	gst_rtp_buffer_unmap(&old_rtp);
-g_print("I am in");
-	return buf;
-	//gst_rtp_buffer_unmap(&mprtps->RTPBuffer);
-}
-
-
-
-/* Copy fixed header and extension. Add OSN before to copy payload
- * Copy memory to avoid to manually copy each rtp buffer field.
- */
-static GstBuffer *
-gst_mprtp_buffer_new (GstMprtpSender * mprtps, GstBuffer * buffer)
-{
-  GstMemory *mem = NULL;
-  GstRTPBuffer rtp = GST_RTP_BUFFER_INIT;
-  GstRTPBuffer new_rtp = GST_RTP_BUFFER_INIT;
-  GstBuffer *new_buffer = gst_buffer_new ();
-  GstMapInfo map;
-  guint payload_len = 0;
-  guint32 ssrc;
-  guint16 seqnum;
-  guint8 fmtp;
-  gint8 index;
-  gst_rtp_buffer_map (buffer, GST_MAP_READ, &rtp);
-  /* 0 - copy fixed header */
-  /* 1 - copy extensions */
-  /* 2 - copy payloads */
-  for(index = 0; index < 4; ++index){
-	if(rtp.size[index] < 1){
-		continue;
-	}
-    mem = gst_memory_copy (rtp.map[index].memory, 0, rtp.size[index]);
-    gst_buffer_append_memory (new_buffer, mem);
+  GST_LOG_OBJECT (mprtps, "Select the next subflow in scheuling tree");
+  //since there is a chance that the sum of the node target values is not equal to the max_tree
+  for(count = 0; result == NULL && count < 2; ++count){
+	  node = _schtree_setnext(category);
   }
+  if(G_UNLIKELY(node == NULL)){
+	  GST_LOG_OBJECT (mprtps, "Not available subflow in the selected tree");
+  }
+  result = node->value;
+  return result;
 
-  /* everything needed is copied */
-  gst_rtp_buffer_unmap (&rtp);
-
-  /* set ssrc, seqnum and fmtp */
-  gst_rtp_buffer_map (new_buffer, GST_MAP_WRITE, &new_rtp);
-  gst_rtp_buffer_set_extension (&new_rtp, 1);
-  _print_rtp_packet_info(&new_rtp);
-  gst_rtp_buffer_unmap (&new_rtp);
-  /* Copy over timestamps */
-
-  return new_buffer;
 }
+
+static void _fillup_subflow_infos(MpRtpHeaderExtSubflowInfos* subflow_info, guint16 subflow_id, guint16 seq_num)
+{
+	subflow_info->subflow_id = subflow_id;
+	subflow_info->subflow_seq_num = seq_num;
+}
+//must be called with G_OBJECT_LOCK
+static void _extending_buffer(GstRTPBuffer *rtp, MPRTPSenderSubflow* selected);
+void _extending_buffer(GstRTPBuffer *rtp, MPRTPSenderSubflow* selected)
+{
+	MpRtpHeaderExtSubflowInfos data;
+	_fillup_subflow_infos(&data, selected->id, ++selected->sent);
+	gst_rtp_buffer_add_extension_onebyte_header(rtp, MPRTP_EXT_HEADER_ID, (gpointer) &data, sizeof(data));
+}
+
 
 static GstFlowReturn
 gst_mprtp_sender_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
 {
-	GstFlowReturn res;
 	GstMprtpSender *mprtps;
-	//GstClockTime position, duration;
+	GstRTPBuffer rtp = GST_RTP_BUFFER_INIT;
+	GstBuffer *outbuf;
+	GstPad *outpad;
+
 	mprtps = GST_MPRTP_SENDER (parent);
 
-	GstElement *element = GST_ELEMENT(mprtps);
-	//trigger scheduling and calculating
-	//buf = gst_mprtp_buffer_new(mprtps, buf);
-	buf = _extending_buffer(mprtps, buf);
+	GST_OBJECT_LOCK(mprtps);
 
-	/*
-	* The _switch function might push a buffer if 'resend-latest' is true.
-	*
-	* Elements/Applications (e.g. camerabin) might use pad probes to
-	* switch output-selector's active pad. If we simply switch and don't
-	* recheck any pending pad switch the following codepath could end
-	* up pushing a buffer on a non-active pad. This is bad.
-	*
-	* So we always should check the pending_srcpad before going further down
-	* the chain and pushing the new buffer
-	*/
-	//while (mprtps->subflows) {
-	/* Do the switch */
-		//gst_mprtp_sender_switch (mprtps);
-	//}
+	outbuf = gst_buffer_make_writable (buf);
+	if (G_UNLIKELY (!gst_rtp_buffer_map(outbuf, GST_MAP_READWRITE, &rtp))){
+		GST_WARNING_OBJECT(mprtps, "The RTP packet is not read and writeable");
+		GST_OBJECT_UNLOCK(mprtps);
+		return GST_FLOW_ERROR;
+	}
+	//implement special case chooses here
+	//mprtps->selected_subflow = _select_subflow_for_special_cases(mprtps, rtp);
+	mprtps->selected_subflow = _select_subflow(mprtps, &rtp);
+	if(mprtps->selected_subflow == NULL){
+		GST_WARNING_OBJECT(mprtps, "The selected subflow is NULL");
+		gst_rtp_buffer_unmap(&rtp);
+		GST_OBJECT_UNLOCK(mprtps);
+		return GST_FLOW_ERROR;
+	}
 
-	/* Keep track of last stop and use it in SEGMENT start after
-	 switching to a new src pad */
-//	position = GST_BUFFER_TIMESTAMP (buf);
-//	if (GST_CLOCK_TIME_IS_VALID (position)) {
-//	duration = GST_BUFFER_DURATION (buf);
-//	if (GST_CLOCK_TIME_IS_VALID (duration)) {
-//	  position += duration;
-//	}
-//	GST_LOG_OBJECT (mprtps, "setting last stop %" GST_TIME_FORMAT,
-//		GST_TIME_ARGS (position));
-//	mprtps->segment.position = position;
-//	}
-//
-//
-	GST_LOG_OBJECT (mprtps, "pushing buffer to %" GST_PTR_FORMAT,
-	  mprtps->active_srcpad);
+	_extending_buffer(&rtp, mprtps->selected_subflow);
+	_print_rtp_packet_info(&rtp);
+	outpad = mprtps->selected_subflow->srcpad;
+	gst_rtp_buffer_unmap(&rtp);
+	GST_OBJECT_UNLOCK(mprtps);
 
-	res = gst_pad_push (mprtps->active_srcpad, buf);
 
-	return res;
+	if (!gst_pad_is_linked (outpad)) {
+	  GST_ERROR_OBJECT(mprtps, "The selected pad (%"GST_PTR_FORMAT")is not linked", outpad);
+	  return GST_FLOW_ERROR;
+	}
+
+	GST_LOG_OBJECT (mprtps, "pushing buffer to subflow %d at %" GST_PTR_FORMAT" pad",
+	  mprtps->selected_subflow->id, outpad);
+
+	return gst_pad_push (outpad, outbuf);
 }
 
 static GstStateChangeReturn
@@ -611,18 +483,20 @@ gst_mprtp_sender_change_state (GstElement * element,
 static gboolean
 gst_mprtp_sender_forward_event (GstMprtpSender* mprtps, GstEvent * event)
 {
-  gboolean res = TRUE;
-  GstPad *active;
-
-  active = gst_mprtp_sender_get_active(mprtps);
-  if (active) {
-    res = gst_pad_push_event (active, event);
-    gst_object_unref (active);
-  } else {
-    gst_event_unref (event);
+  gboolean result = TRUE;
+  GstPad *pad;
+  MPRTPSenderSubflow *subflow;
+  GSList *item;
+  for(item = mprtps->subflows; item != NULL; item = item->next){
+	  subflow = (MPRTPSenderSubflow*) item->data;
+	  pad = subflow->srcpad;
+	  if(pad == NULL){
+		  continue;
+	  }
+	  result &= gst_pad_push_event (pad, event);
   }
 
-  return res;
+  return result;
 }
 
 static gboolean
@@ -651,7 +525,7 @@ gst_mprtp_sender_event (GstPad * pad, GstObject * parent, GstEvent * event)
     	  g_print("----%d----", GST_EVENT_TYPE(event));
     	  //result = gst_pad_event_default (pad, parent, event);
     	  //g_print("%d",result);
-    	  result = gst_pad_push_event(mprtps->active_srcpad, event);
+    	  result = gst_pad_push_event(mprtps->selected_subflow->srcpad, event);
     	  g_print("%d\n",result);
         break;
   }
@@ -682,28 +556,28 @@ gst_mprtp_sender_query (GstPad * pad, GstObject * parent, GstQuery * query)
 //-------- PRIVATE FUNCTIONS DEFINITIONS ------------------------
 //---------------------------------------------------------------
 
-Subflow* _subflow_ctor()
+MPRTPSenderSubflow* _subflow_ctor()
 {
-	Subflow* result;
-	result = (Subflow*) g_malloc0(sizeof(Subflow));
+	MPRTPSenderSubflow* result;
+	result = (MPRTPSenderSubflow*) g_malloc0(sizeof(MPRTPSenderSubflow));
 	return result;
 }
 
-Subflow* _make_subflow(guint16 id, GstPad* srcpad)
+MPRTPSenderSubflow* _make_subflow(guint16 id, GstPad* srcpad)
 {
-	Subflow* result = _subflow_ctor();
+	MPRTPSenderSubflow* result = _subflow_ctor();
 	result->id = id;
 	result->srcpad = srcpad;
 	result->congestion = MPRTP_SUBFLOW_NON_CONGESTED;
 	return result;
 }
 
-void _dispose_subflow(Subflow* target)
+void _dispose_subflow(MPRTPSenderSubflow* target)
 {
 
 }
 
-void _subflow_dtor(Subflow* target)
+void _subflow_dtor(MPRTPSenderSubflow* target)
 {
 	g_free(target);
 }
@@ -725,7 +599,7 @@ void _schnode_rdtor(SchNode* target)
 	g_free(target);
 }
 
-SchNode* _schtree_insert(Subflow* value,
+SchNode* _schtree_insert(MPRTPSenderSubflow* value,
 		SchNode *node, guint32* target, guint32 current)
 {
 	//create the root
@@ -762,9 +636,9 @@ SchNode* _schtree_setnext(SchNode* node)
 	return _schtree_setnext(next);
 }
 
-SchNode* _schtree_build(GSList* subflows, Congestion congestion)
+SchNode* _schtree_build(GSList* subflows, MPRTP_Congestion congestion)
 {
-	Subflow *subflow;
+	MPRTPSenderSubflow *subflow;
 	GSList *it;
 	guint32 bw_sum = 0;
 	const guint32 tree_max = 128;
@@ -776,7 +650,7 @@ SchNode* _schtree_build(GSList* subflows, Congestion congestion)
 	}
 	//Aggregating
 	for(it = subflows; it != NULL; it = it->next){
-		subflow = (Subflow*) it->data;
+		subflow = (MPRTPSenderSubflow*) it->data;
 		if(subflow->congestion != congestion){
 			continue;
 		}
@@ -789,7 +663,7 @@ SchNode* _schtree_build(GSList* subflows, Congestion congestion)
 	}
 
 	for(it = subflows; it != NULL; it = it->next){
-		subflow = (Subflow*) it->data;
+		subflow = (MPRTPSenderSubflow*) it->data;
 		if(subflow->congestion != congestion){
 			continue;
 		}
@@ -798,19 +672,19 @@ SchNode* _schtree_build(GSList* subflows, Congestion congestion)
 		}else{
 		  target = ((gfloat)subflow->bw / (gfloat)bw_sum) * tree_max;
 		}
-		root = _schtree_insert(&subflow, root, &target, tree_max);
+		root = _schtree_insert(subflow, root, &target, tree_max);
 	}
 	return root;
 }
 
 void _recalculate_congestion(GstMprtpSender* mprtps)
 {
-	Subflow *subflow;
+	MPRTPSenderSubflow *subflow;
 	GSList *it;
 
 	//recalculate the categories
 	for(it = mprtps->subflows; it != NULL; it = it->next){
-		subflow = (Subflow*) it->data;
+		subflow = (MPRTPSenderSubflow*) it->data;
 		subflow->congestion = MPRTP_SUBFLOW_NON_CONGESTED;
 	}
 
@@ -825,12 +699,68 @@ void _refresh_schtree(GstMprtpSender* mprtps)
 		_schnode_rdtor(mprtps->nctree);
 	}
 	mprtps->nctree = _schtree_build(mprtps->subflows, MPRTP_SUBFLOW_NON_CONGESTED);
+
 	if(mprtps->ctree != NULL){
 		_schnode_rdtor(mprtps->ctree);
 	}
 	mprtps->ctree = _schtree_build(mprtps->subflows, MPRTP_SUBFLOW_CONGESTED);
+
 	if(mprtps->mctree != NULL){
 		_schnode_rdtor(mprtps->mctree);
 	}
 	mprtps->mctree = _schtree_build(mprtps->subflows, MPRTP_SUBFLOW_MIDLY_CONGESTED);
+}
+
+
+
+void _print_rtp_packet_info(GstRTPBuffer *rtp)
+{
+	gboolean extended;
+	g_print(
+   "0               1               2               3          \n"
+   "0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 \n"
+   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
+   "|%3d|%1d|%1d|%7d|%1d|%13d|%31d|\n"
+   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
+   "|%63lu|\n"
+   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
+   "|%63lu|\n",
+			gst_rtp_buffer_get_version(rtp),
+			gst_rtp_buffer_get_padding(rtp),
+			extended = gst_rtp_buffer_get_extension(rtp),
+			gst_rtp_buffer_get_csrc_count(rtp),
+			gst_rtp_buffer_get_marker(rtp),
+			gst_rtp_buffer_get_payload_type(rtp),
+			gst_rtp_buffer_get_seq(rtp),
+			gst_rtp_buffer_get_timestamp(rtp),
+			gst_rtp_buffer_get_ssrc(rtp)
+			);
+
+	if(extended){
+		guint16 bits;
+		guint8 *pdata;
+		guint wordlen;
+		gulong index = 0;
+		guint count = 0;
+
+		gst_rtp_buffer_get_extension_data (rtp, &bits, (gpointer) & pdata, &wordlen);
+
+
+		g_print(
+	   "+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n"
+	   "|0x%-29X|%31d|\n"
+	   "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n",
+	   bits,
+	   wordlen);
+
+	   for(index = 0; index < wordlen; ++index){
+		 g_print("|0x%-5X = %5d|0x%-5X = %5d|0x%-5X = %5d|0x%-5X = %5d|\n"
+				 "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n",
+				 *(pdata+index*4), *(pdata+index*4),
+				 *(pdata+index*4+1),*(pdata+index*4+1),
+				 *(pdata+index*4+2),*(pdata+index*4+2),
+				 *(pdata+index*4+3),*(pdata+index*4+3));
+	  }
+	  g_print("+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n");
+	}
 }

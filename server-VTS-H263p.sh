@@ -45,6 +45,7 @@ VRTCPSRC="udpsrc port=5005 name=vrtpsrc"
 PIPELINE="mprtpsender name=mprtps rtpbin name=rtpbin 
             $VSOURCE ! $VENC ! rtpbin.send_rtp_sink_2
 	      rtpbin.send_rtp_src_2 ! mprtps.mprtp_sink mprtps.mprtp_src_1 !  $VRTPSINK1 
+              mprtps.mprtp_src_2 !  $VRTPSINK2
               rtpbin.send_rtcp_src_2 ! $VRTCPSINK
             $VRTCPSRC ! rtpbin.recv_rtcp_sink_2"
 
