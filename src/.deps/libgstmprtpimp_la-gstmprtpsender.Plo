@@ -204,6 +204,7 @@ libgstmprtpimp_la-gstmprtpsender.lo: gstmprtpsender.c \
  /home/balazs/gst/master/gstreamer/gst/gstparse.h \
  /home/balazs/gst/master/gstreamer/gst/gstcompat.h \
  /home/balazs/gst/master/gst-plugins-base/gst-libs/gst/rtp/gstrtppayloads.h \
+ /home/balazs/gst/master/gst-plugins-base/gst-libs/gst/rtp/gstrtcpbuffer.h \
  gstmprtpsender.h mprtplibs.h
 
 /usr/include/stdc-predef.h:
@@ -679,6 +680,8 @@ libgstmprtpimp_la-gstmprtpsender.lo: gstmprtpsender.c \
 /home/balazs/gst/master/gstreamer/gst/gstcompat.h:
 
 /home/balazs/gst/master/gst-plugins-base/gst-libs/gst/rtp/gstrtppayloads.h:
+
+/home/balazs/gst/master/gst-plugins-base/gst-libs/gst/rtp/gstrtcpbuffer.h:
 
 gstmprtpsender.h:
 

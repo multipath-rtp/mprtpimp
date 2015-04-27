@@ -251,7 +251,7 @@ GstPad* _request_mprtp_sinkpad(GstElement * element,
     gst_pad_set_active (sinkpad, TRUE);
 
     gst_element_add_pad (GST_ELEMENT (mprtpr), sinkpad);
-g_print("Pad %s is added", name);
+
 	return sinkpad;
 }
 

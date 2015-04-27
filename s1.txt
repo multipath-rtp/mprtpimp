@@ -1,0 +1,575 @@
+mprtpsender name=mprtps rtpbin name=rtpbin videotestsrc is-live=1 ! video/x-raw,width=352,height=288,framerate=15/1 ! avenc_h263p ! rtph263ppay ! rtpbin.send_rtp_sink_2 rtpbin.send_rtp_src_2 ! mprtps.mprtp_sink mprtps.mprtp_src_1 ! udpsink port=5000 host=127.0.0.1 ts-offset=0 name=vrtpsink mprtps.mprtp_src_2 ! udpsink port=5010 host=127.0.0.2 ts-offset=0 name=vrtpsink2 rtpbin.send_rtcp_src_2 ! udpsink port=5001 host=127.0.0.1 sync=false async=false name=vrtcpsink udpsrc port=5005 name=vrtpsrc ! rtpbin.recv_rtcp_sink_2
+0:00:00.000433131 31670      0x2284b20 INFO                GST_INIT gstmessage.c:119:_priv_gst_message_initialize: init messages
+0:00:00.001069490 31670      0x2284b20 INFO                GST_INIT gstcontext.c:77:_priv_gst_context_initialize: init contexts
+0:00:00.001446402 31670      0x2284b20 INFO      GST_PLUGIN_LOADING gstplugin.c:317:_priv_gst_plugin_initialize: registering 0 static plugins
+0:00:00.001585170 31670      0x2284b20 INFO      GST_PLUGIN_LOADING gstplugin.c:225:gst_plugin_register_static: registered static plugin "staticelements"
+0:00:00.001601162 31670      0x2284b20 INFO      GST_PLUGIN_LOADING gstplugin.c:227:gst_plugin_register_static: added static plugin "staticelements", result: 1
+0:00:00.001618273 31670      0x2284b20 INFO            GST_REGISTRY gstregistry.c:1722:ensure_current_registry: reading registry cache: /home/balazs/gst/master/gstreamer/registry.dat
+0:00:00.022019972 31670      0x2284b20 INFO            GST_REGISTRY gstregistrybinary.c:619:priv_gst_registry_binary_read_cache: loaded /home/balazs/gst/master/gstreamer/registry.dat in 0,020370 seconds
+0:00:00.022184859 31670      0x2284b20 INFO            GST_REGISTRY gstregistry.c:1578:scan_and_update_registry: Validating plugins from registry cache: /home/balazs/gst/master/gstreamer/registry.dat
+0:00:00.048763407 31670      0x2284b20 INFO            GST_REGISTRY gstregistry.c:1680:scan_and_update_registry: Registry cache has not changed
+0:00:00.048810826 31670      0x2284b20 INFO            GST_REGISTRY gstregistry.c:1757:ensure_current_registry: registry reading and updating done, result = 1
+0:00:00.048838831 31670      0x2284b20 INFO                GST_INIT gst.c:709:init_post: GLib runtime version: 2.40.2
+0:00:00.048852170 31670      0x2284b20 INFO                GST_INIT gst.c:711:init_post: GLib headers version: 2.40.2
+0:00:00.048863134 31670      0x2284b20 INFO                GST_INIT gst.c:712:init_post: initialized GStreamer successfully
+0:00:00.048914046 31670      0x2284b20 INFO            GST_PIPELINE gstparse.c:323:gst_parse_launch_full: parsing pipeline description 'mprtpsender name=mprtps rtpbin name=rtpbin videotestsrc is-live=1 ! video/x-raw,width=352,height=288,framerate=15/1 ! avenc_h263p ! rtph263ppay ! rtpbin.send_rtp_sink_2 rtpbin.send_rtp_src_2 ! mprtps.mprtp_sink mprtps.mprtp_src_1 ! udpsink port=5000 host=127.0.0.1 ts-offset=0 name=vrtpsink mprtps.mprtp_src_2 ! udpsink port=5010 host=127.0.0.2 ts-offset=0 name=vrtpsink2 rtpbin.send_rtcp_src_2 ! udpsink port=5001 host=127.0.0.1 sync=false async=false name=vrtcpsink udpsrc port=5005 name=vrtpsrc ! rtpbin.recv_rtcp_sink_2 '
+0:00:00.049615633 31670      0x2284b20 INFO      GST_PLUGIN_LOADING gstplugin.c:835:gst_plugin_load_file: plugin "/usr/local/lib/gstreamer-1.0/libgstmprtpimp.so" loaded
+0:00:00.049645035 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "mprtpsender"
+
+(gst-launch-1.0:31670): GLib-GObject-CRITICAL **: g_param_spec_internal: assertion '!(flags & G_PARAM_STATIC_NAME) || is_canonical (name)' failed
+
+(gst-launch-1.0:31670): GLib-GObject-CRITICAL **: g_object_class_install_property: assertion 'G_IS_PARAM_SPEC (pspec)' failed
+0:00:00.049825425 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstMprtpSender@0x242e020> adding pad 'mprtp_sink'
+0:00:00.051580301 31670      0x2284b20 INFO      GST_PLUGIN_LOADING gstplugin.c:835:gst_plugin_load_file: plugin "/home/balazs/gst/master/gst-plugins-good/gst/rtpmanager/.libs/libgstrtpmanager.so" loaded
+0:00:00.051632680 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "rtpbin"
+0:00:00.052468495 31670      0x2284b20 INFO      GST_PLUGIN_LOADING gstplugin.c:835:gst_plugin_load_file: plugin "/home/balazs/gst/master/gst-plugins-base/gst/videotestsrc/.libs/libgstvideotestsrc.so" loaded
+0:00:00.052490773 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "videotestsrc"
+0:00:00.052672281 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstBaseSrc@0x2449ad0> adding pad 'src'
+0:00:00.058189096 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_avs
+0:00:00.058361804 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_daud
+0:00:00.058402240 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_ea
+0:00:00.058440650 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_4xm
+0:00:00.058473893 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_gxf
+0:00:00.058509091 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_idcin
+0:00:00.058544289 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_ipmovie
+0:00:00.058606445 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_mm
+0:00:00.058640525 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_mmf
+0:00:00.058709315 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_nsv
+0:00:00.058742069 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_nut
+0:00:00.058806879 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_film_cpk
+0:00:00.058841029 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_smk
+0:00:00.058875389 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_sol
+0:00:00.058910587 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_psxstr
+0:00:00.058970787 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_vmd
+0:00:00.059015134 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_wc3movie
+0:00:00.059051799 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_wsaud
+0:00:00.059092235 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_wsvqa
+0:00:00.059135464 31670      0x2284b20 INFO            GST_TYPEFIND gsttypefind.c:71:gst_type_find_register: registering typefind function for avtype_yuv4mpegpipe
+0:00:00.059538636 31670      0x2284b20 INFO      GST_PLUGIN_LOADING gstplugin.c:835:gst_plugin_load_file: plugin "/home/balazs/gst/master/gst-libav/ext/libav/.libs/libgstlibav.so" loaded
+0:00:00.059556096 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "avenc_h263p"
+0:00:00.060309293 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstVideoEncoder@0x24818d0> adding pad 'sink'
+0:00:00.060338206 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstVideoEncoder@0x24818d0> adding pad 'src'
+0:00:00.061774065 31670      0x2284b20 INFO      GST_PLUGIN_LOADING gstplugin.c:835:gst_plugin_load_file: plugin "/home/balazs/gst/master/gst-plugins-good/gst/rtp/.libs/libgstrtp.so" loaded
+0:00:00.061808635 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "rtph263ppay"
+0:00:00.061973241 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstRTPBasePayload@0x24920a0> adding pad 'src'
+0:00:00.061998592 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstRTPBasePayload@0x24920a0> adding pad 'sink'
+0:00:00.062350224 31670      0x2284b20 INFO      GST_PLUGIN_LOADING gstplugin.c:835:gst_plugin_load_file: plugin "/home/balazs/gst/master/gst-plugins-good/gst/udp/.libs/libgstudp.so" loaded
+0:00:00.062368032 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "udpsink"
+0:00:00.062572097 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstBaseSink@0x2498110> adding pad 'sink'
+0:00:00.063782869 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "udpsink"
+0:00:00.063834269 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstBaseSink@0x249ada0> adding pad 'sink'
+0:00:00.064239466 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "udpsink"
+0:00:00.064277248 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstBaseSink@0x249bd50> adding pad 'sink'
+0:00:00.064594519 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "udpsrc"
+0:00:00.064699974 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstBaseSrc@0x249f0d0> adding pad 'src'
+0:00:00.064746206 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "pipeline"
+0:00:00.064888255 31670      0x2284b20 INFO            GST_PIPELINE grammar.y:571:gst_parse_perform_link: linking videotestsrc0:(any) to avenc_h263p0:(any) (0/0) with caps "video/x-raw, width=(int)352, height=(int)288, framerate=(fraction)15/1"
+0:00:00.065476007 31670      0x2284b20 INFO      GST_PLUGIN_LOADING gstplugin.c:835:gst_plugin_load_file: plugin "/home/balazs/gst/master/gstreamer/plugins/elements/.libs/libgstcoreelements.so" loaded
+0:00:00.065498565 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "capsfilter"
+0:00:00.065608838 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstBaseTransform@0x24a63b0> adding pad 'sink'
+0:00:00.065634818 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstBaseTransform@0x24a63b0> adding pad 'src'
+0:00:00.065658842 31670      0x2284b20 INFO              GST_STATES gstbin.c:1829:gst_bin_get_state_func:<pipeline0> getting state
+0:00:00.065690827 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<capsfilter0> completed state change to NULL
+0:00:00.065711290 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.065735174 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstutils.c:1566:gst_element_link_pads_full: trying to link element videotestsrc0:(any) to element capsfilter0:sink
+0:00:00.065751376 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:897:gst_element_get_static_pad: found pad capsfilter0:sink
+0:00:00.065778403 31670      0x2284b20 INFO                GST_PADS gstutils.c:1439:prepare_link_maybe_ghosting: videotestsrc0 and capsfilter0 in same bin, no need for ghost pads
+0:00:00.065804523 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link videotestsrc0:src and capsfilter0:sink
+0:00:00.065841397 31670      0x2284b20 INFO                GST_PADS gstpad.c:3953:gst_pad_peer_query:<capsfilter0:src> pad has no peer
+0:00:00.065868075 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked videotestsrc0:src and capsfilter0:sink, successful
+0:00:00.065881414 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.065892308 31670      0x2284b20 INFO               GST_EVENT gstpad.c:5405:gst_pad_send_event_unchecked:<videotestsrc0:src> Received event on flushing pad. Discarding
+0:00:00.065911095 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstutils.c:1566:gst_element_link_pads_full: trying to link element capsfilter0:src to element avenc_h263p0:(any)
+0:00:00.065925062 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:897:gst_element_get_static_pad: found pad capsfilter0:src
+0:00:00.065938960 31670      0x2284b20 INFO                GST_PADS gstutils.c:932:gst_pad_check_link: trying to link capsfilter0:src and avenc_h263p0:sink
+0:00:00.065993154 31670      0x2284b20 INFO                GST_PADS gstpad.c:3953:gst_pad_peer_query:<avenc_h263p0:src> pad has no peer
+0:00:00.066033590 31670      0x2284b20 INFO                GST_PADS gstutils.c:1439:prepare_link_maybe_ghosting: capsfilter0 and avenc_h263p0 in same bin, no need for ghost pads
+0:00:00.066051817 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link capsfilter0:src and avenc_h263p0:sink
+0:00:00.066093091 31670      0x2284b20 INFO                GST_PADS gstpad.c:3953:gst_pad_peer_query:<avenc_h263p0:src> pad has no peer
+0:00:00.066119280 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked capsfilter0:src and avenc_h263p0:sink, successful
+0:00:00.066132689 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.066143584 31670      0x2284b20 INFO               GST_EVENT gstpad.c:5405:gst_pad_send_event_unchecked:<capsfilter0:src> Received event on flushing pad. Discarding
+0:00:00.066160833 31670      0x2284b20 INFO            GST_PIPELINE grammar.y:571:gst_parse_perform_link: linking avenc_h263p0:(any) to rtph263ppay0:(any) (0/0) with caps "(NULL)"
+0:00:00.066176547 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstutils.c:1566:gst_element_link_pads_full: trying to link element avenc_h263p0:(any) to element rtph263ppay0:(any)
+0:00:00.066191213 31670      0x2284b20 INFO                GST_PADS gstutils.c:932:gst_pad_check_link: trying to link avenc_h263p0:src and rtph263ppay0:sink
+0:00:00.066216075 31670      0x2284b20 INFO                GST_PADS gstpad.c:3953:gst_pad_peer_query:<rtph263ppay0:src> pad has no peer
+0:00:00.066230880 31670      0x2284b20 INFO                GST_PADS gstutils.c:1439:prepare_link_maybe_ghosting: avenc_h263p0 and rtph263ppay0 in same bin, no need for ghost pads
+0:00:00.066247362 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link avenc_h263p0:src and rtph263ppay0:sink
+0:00:00.066266078 31670      0x2284b20 INFO                GST_PADS gstpad.c:3953:gst_pad_peer_query:<rtph263ppay0:src> pad has no peer
+0:00:00.066279487 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked avenc_h263p0:src and rtph263ppay0:sink, successful
+0:00:00.066292128 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.066302324 31670      0x2284b20 INFO               GST_EVENT gstpad.c:5405:gst_pad_send_event_unchecked:<avenc_h263p0:src> Received event on flushing pad. Discarding
+0:00:00.066326488 31670      0x2284b20 INFO           GST_PARENTAGE gstbin.c:4177:gst_bin_get_by_name: [pipeline0]: looking up child element rtpbin
+0:00:00.066355261 31670      0x2284b20 INFO            GST_PIPELINE grammar.y:571:gst_parse_perform_link: linking rtph263ppay0:(any) to rtpbin:rtpbin (0/1) with caps "(NULL)"
+0:00:00.066370765 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstutils.c:1566:gst_element_link_pads_full: trying to link element rtph263ppay0:(any) to element rtpbin:send_rtp_sink_2
+0:00:00.066383615 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'send_rtp_sink_2' in element "rtpbin"
+0:00:00.066401354 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'send_rtp_sink_2' in element "rtpbin"
+0:00:00.066428870 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "rtpsession"
+0:00:00.066800196 31670      0x2284b20 INFO     GST_ELEMENT_FACTORY gstelementfactory.c:364:gst_element_factory_create: creating element "rtpssrcdemux"
+0:00:00.066916056 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstRtpSsrcDemux@0x24b3030> adding pad 'sink'
+0:00:00.066941407 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<GstRtpSsrcDemux@0x24b3030> adding pad 'rtcp_sink'
+0:00:00.067005727 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpssrcdemux0> completed state change to NULL
+0:00:00.067020812 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpsession0> completed state change to NULL
+0:00:00.067038271 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'send_rtp_sink' in element "rtpsession0"
+0:00:00.067077031 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<rtpsession0> adding pad 'send_rtp_sink'
+0:00:00.067109366 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<rtpsession0> adding pad 'send_rtp_src'
+0:00:00.067122775 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:897:gst_element_get_static_pad: found pad rtpsession0:send_rtp_src
+0:00:00.067220338 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link rtpsession0:send_rtp_src and send_rtp_src_2:proxypad0
+0:00:00.067236819 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked rtpsession0:send_rtp_src and send_rtp_src_2:proxypad0, successful
+0:00:00.067249809 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.067282493 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<rtpbin> adding pad 'send_rtp_src_2'
+0:00:00.067318180 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link send_rtp_sink_2:proxypad1 and rtpsession0:send_rtp_sink
+0:00:00.067333824 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked send_rtp_sink_2:proxypad1 and rtpsession0:send_rtp_sink, successful
+0:00:00.067346953 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.067363993 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<rtpbin> adding pad 'send_rtp_sink_2'
+0:00:00.067377612 31670      0x2284b20 INFO                GST_PADS gstutils.c:1439:prepare_link_maybe_ghosting: rtph263ppay0 and rtpbin in same bin, no need for ghost pads
+0:00:00.067395071 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link rtph263ppay0:src and rtpbin:send_rtp_sink_2
+0:00:00.067431736 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked rtph263ppay0:src and rtpbin:send_rtp_sink_2, successful
+0:00:00.067453246 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.067464839 31670      0x2284b20 INFO               GST_EVENT gstpad.c:5405:gst_pad_send_event_unchecked:<rtph263ppay0:src> Received event on flushing pad. Discarding
+0:00:00.067482228 31670      0x2284b20 INFO           GST_PARENTAGE gstbin.c:4177:gst_bin_get_by_name: [pipeline0]: looking up child element rtpbin
+0:00:00.067510163 31670      0x2284b20 INFO           GST_PARENTAGE gstbin.c:4177:gst_bin_get_by_name: [pipeline0]: looking up child element mprtps
+0:00:00.067540054 31670      0x2284b20 INFO            GST_PIPELINE grammar.y:571:gst_parse_perform_link: linking rtpbin:rtpbin to mprtps:mprtps (1/1) with caps "(NULL)"
+0:00:00.067555767 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstutils.c:1566:gst_element_link_pads_full: trying to link element rtpbin:send_rtp_src_2 to element mprtps:mprtp_sink
+0:00:00.067569665 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:897:gst_element_get_static_pad: found pad rtpbin:send_rtp_src_2
+0:00:00.067581467 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:897:gst_element_get_static_pad: found pad mprtps:mprtp_sink
+0:00:00.067592641 31670      0x2284b20 INFO                GST_PADS gstutils.c:1439:prepare_link_maybe_ghosting: rtpbin and mprtps in same bin, no need for ghost pads
+0:00:00.067608425 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link rtpbin:send_rtp_src_2 and mprtps:mprtp_sink
+0:00:00.067663107 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked rtpbin:send_rtp_src_2 and mprtps:mprtp_sink, successful
+0:00:00.067677424 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.067694674 31670      0x2284b20 INFO               GST_EVENT gstpad.c:5405:gst_pad_send_event_unchecked:<rtph263ppay0:src> Received event on flushing pad. Discarding
+0:00:00.067714508 31670      0x2284b20 INFO           GST_PARENTAGE gstbin.c:4177:gst_bin_get_by_name: [pipeline0]: looking up child element mprtps
+0:00:00.067744957 31670      0x2284b20 INFO            GST_PIPELINE grammar.y:571:gst_parse_perform_link: linking mprtps:mprtps to vrtpsink:(any) (1/0) with caps "(NULL)"
+0:00:00.067760251 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstutils.c:1566:gst_element_link_pads_full: trying to link element mprtps:mprtp_src_1 to element vrtpsink:(any)
+0:00:00.067773660 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'mprtp_src_1' in element "mprtps"
+0:00:00.067786161 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'mprtp_src_1' in element "mprtps"
+Requested pad name: mprtp_src_1
+
+NEW PAD REQUESTED
+
+0:00:00.067844336 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<mprtps> adding pad 'mprtp_src_1'
+0:00:00.067859979 31670      0x2284b20 INFO                GST_PADS gstutils.c:932:gst_pad_check_link: trying to link mprtps:mprtp_src_1 and vrtpsink:sink
+0:00:00.067884632 31670      0x2284b20 INFO                GST_PADS gstutils.c:1439:prepare_link_maybe_ghosting: mprtps and vrtpsink in same bin, no need for ghost pads
+0:00:00.067902161 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link mprtps:mprtp_src_1 and vrtpsink:sink
+0:00:00.067920878 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked mprtps:mprtp_src_1 and vrtpsink:sink, successful
+0:00:00.067934007 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.067952304 31670      0x2284b20 INFO           GST_PARENTAGE gstbin.c:4177:gst_bin_get_by_name: [pipeline0]: looking up child element mprtps
+0:00:00.067982684 31670      0x2284b20 INFO            GST_PIPELINE grammar.y:571:gst_parse_perform_link: linking mprtps:mprtps to vrtpsink2:(any) (1/0) with caps "(NULL)"
+0:00:00.068009012 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstutils.c:1566:gst_element_link_pads_full: trying to link element mprtps:mprtp_src_2 to element vrtpsink2:(any)
+0:00:00.068023259 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'mprtp_src_2' in element "mprtps"
+0:00:00.068036040 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'mprtp_src_2' in element "mprtps"
+Requested pad name: mprtp_src_2
+
+NEW PAD REQUESTED
+
+0:00:00.068073123 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<mprtps> adding pad 'mprtp_src_2'
+0:00:00.068088138 31670      0x2284b20 INFO                GST_PADS gstutils.c:932:gst_pad_check_link: trying to link mprtps:mprtp_src_2 and vrtpsink2:sink
+0:00:00.068107344 31670      0x2284b20 INFO                GST_PADS gstutils.c:1439:prepare_link_maybe_ghosting: mprtps and vrtpsink2 in same bin, no need for ghost pads
+0:00:00.068123406 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link mprtps:mprtp_src_2 and vrtpsink2:sink
+0:00:00.068142402 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked mprtps:mprtp_src_2 and vrtpsink2:sink, successful
+0:00:00.068155531 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.068174178 31670      0x2284b20 INFO           GST_PARENTAGE gstbin.c:4177:gst_bin_get_by_name: [pipeline0]: looking up child element rtpbin
+0:00:00.068201485 31670      0x2284b20 INFO            GST_PIPELINE grammar.y:571:gst_parse_perform_link: linking rtpbin:rtpbin to vrtcpsink:(any) (1/0) with caps "(NULL)"
+0:00:00.068216849 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstutils.c:1566:gst_element_link_pads_full: trying to link element rtpbin:send_rtcp_src_2 to element vrtcpsink:(any)
+0:00:00.068230188 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'send_rtcp_src_2' in element "rtpbin"
+0:00:00.068242898 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'send_rtcp_src_2' in element "rtpbin"
+0:00:00.068258332 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'send_rtcp_src' in element "rtpsession0"
+0:00:00.068292972 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<rtpsession0> adding pad 'send_rtcp_src'
+0:00:00.068338087 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link rtpsession0:send_rtcp_src and send_rtcp_src_2:proxypad2
+0:00:00.068353591 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked rtpsession0:send_rtcp_src and send_rtcp_src_2:proxypad2, successful
+0:00:00.068366301 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.068385227 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<rtpbin> adding pad 'send_rtcp_src_2'
+0:00:00.068400451 31670      0x2284b20 INFO                GST_PADS gstutils.c:932:gst_pad_check_link: trying to link rtpbin:send_rtcp_src_2 and vrtcpsink:sink
+0:00:00.068423428 31670      0x2284b20 INFO                GST_PADS gstutils.c:1439:prepare_link_maybe_ghosting: rtpbin and vrtcpsink in same bin, no need for ghost pads
+0:00:00.068440189 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link rtpbin:send_rtcp_src_2 and vrtcpsink:sink
+0:00:00.068462327 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked rtpbin:send_rtcp_src_2 and vrtcpsink:sink, successful
+0:00:00.068475666 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.068502833 31670      0x2284b20 INFO           GST_PARENTAGE gstbin.c:4177:gst_bin_get_by_name: [pipeline0]: looking up child element rtpbin
+0:00:00.068530489 31670      0x2284b20 INFO            GST_PIPELINE grammar.y:571:gst_parse_perform_link: linking vrtpsrc:(any) to rtpbin:rtpbin (0/1) with caps "(NULL)"
+0:00:00.068545783 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstutils.c:1566:gst_element_link_pads_full: trying to link element vrtpsrc:(any) to element rtpbin:recv_rtcp_sink_2
+0:00:00.068559471 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'recv_rtcp_sink_2' in element "rtpbin"
+0:00:00.068572461 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'recv_rtcp_sink_2' in element "rtpbin"
+0:00:00.068586918 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'recv_rtcp_sink' in element "rtpsession0"
+0:00:00.068620579 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<rtpsession0> adding pad 'recv_rtcp_sink'
+0:00:00.068652914 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<rtpsession0> adding pad 'sync_src'
+0:00:00.068672608 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:897:gst_element_get_static_pad: found pad rtpsession0:sync_src
+0:00:00.068689579 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:897:gst_element_get_static_pad: found pad rtpssrcdemux0:rtcp_sink
+0:00:00.068705990 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link rtpsession0:sync_src and rtpssrcdemux0:rtcp_sink
+0:00:00.068719958 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked rtpsession0:sync_src and rtpssrcdemux0:rtcp_sink, successful
+0:00:00.068732389 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.068771219 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link recv_rtcp_sink_2:proxypad3 and rtpsession0:recv_rtcp_sink
+0:00:00.068786373 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked recv_rtcp_sink_2:proxypad3 and rtpsession0:recv_rtcp_sink, successful
+0:00:00.068807325 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.068824505 31670      0x2284b20 INFO        GST_ELEMENT_PADS gstelement.c:646:gst_element_add_pad:<rtpbin> adding pad 'recv_rtcp_sink_2'
+0:00:00.068838263 31670      0x2284b20 INFO                GST_PADS gstutils.c:1439:prepare_link_maybe_ghosting: vrtpsrc and rtpbin in same bin, no need for ghost pads
+0:00:00.068855932 31670      0x2284b20 INFO                GST_PADS gstpad.c:2224:gst_pad_link_prepare: trying to link vrtpsrc:src and rtpbin:recv_rtcp_sink_2
+0:00:00.068884635 31670      0x2284b20 INFO                GST_PADS gstpad.c:2430:gst_pad_link_full: linked vrtpsrc:src and rtpbin:recv_rtcp_sink_2, successful
+0:00:00.068898882 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1374:gst_event_new_reconfigure: creating reconfigure event
+0:00:00.068909986 31670      0x2284b20 INFO               GST_EVENT gstpad.c:5405:gst_pad_send_event_unchecked:<vrtpsrc:src> Received event on flushing pad. Discarding
+Setting pipeline to PAUSED ...
+0:00:00.068993372 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtcpsink> current NULL pending VOID_PENDING, desired next READY
+0:00:00.069202814 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtcpsink> completed state change to READY
+0:00:00.069433767 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtcpsink> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.069491453 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtcpsink' changed state to 2(READY) successfully
+0:00:00.069541596 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink2> current NULL pending VOID_PENDING, desired next READY
+0:00:00.069658504 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsink2> completed state change to READY
+0:00:00.069672542 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsink2> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.069689861 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsink2' changed state to 2(READY) successfully
+0:00:00.069707879 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink> current NULL pending VOID_PENDING, desired next READY
+0:00:00.069775482 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsink> completed state change to READY
+0:00:00.069788961 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsink> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.069805792 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsink' changed state to 2(READY) successfully
+0:00:00.069823810 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<mprtps> current NULL pending VOID_PENDING, desired next READY
+0:00:00.069838825 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<mprtps> completed state change to READY
+0:00:00.069850069 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<mprtps> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.069865852 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'mprtps' changed state to 2(READY) successfully
+0:00:00.069883102 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpbin> current NULL pending VOID_PENDING, desired next READY
+0:00:00.069917182 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpssrcdemux0> current NULL pending VOID_PENDING, desired next READY
+0:00:00.069932407 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpssrcdemux0> completed state change to READY
+0:00:00.069944000 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpssrcdemux0> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.069961459 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpssrcdemux0' changed state to 2(READY) successfully
+0:00:00.069978220 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpsession0> current NULL pending VOID_PENDING, desired next READY
+0:00:00.069992258 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpsession0> completed state change to READY
+0:00:00.070003711 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpsession0> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.070020193 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpsession0' changed state to 2(READY) successfully
+0:00:00.070037932 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpbin> completed state change to READY
+0:00:00.070049455 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpbin> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.070072780 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtpbin' changed state to 2(READY) successfully
+0:00:00.070090170 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtph263ppay0> current NULL pending VOID_PENDING, desired next READY
+0:00:00.070108048 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtph263ppay0> completed state change to READY
+0:00:00.070119781 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtph263ppay0> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.070135844 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtph263ppay0' changed state to 2(READY) successfully
+0:00:00.070150929 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsrc> current NULL pending VOID_PENDING, desired next READY
+0:00:00.070200653 31670      0x2284b20 INFO                  udpsrc gstudpsrc.c:994:gst_udpsrc_open:<vrtpsrc> have udp buffer of 212992 bytes
+0:00:00.070230334 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsrc> completed state change to READY
+0:00:00.070242765 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsrc> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.070259386 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsrc' changed state to 2(READY) successfully
+0:00:00.070276776 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<avenc_h263p0> current NULL pending VOID_PENDING, desired next READY
+0:00:00.070292000 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<avenc_h263p0> completed state change to READY
+0:00:00.070303244 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<avenc_h263p0> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.070326430 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'avenc_h263p0' changed state to 2(READY) successfully
+0:00:00.070344309 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<capsfilter0> current NULL pending VOID_PENDING, desired next READY
+0:00:00.070358346 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<capsfilter0> completed state change to READY
+0:00:00.070369520 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<capsfilter0> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.070385862 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'capsfilter0' changed state to 2(READY) successfully
+0:00:00.070401017 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<videotestsrc0> current NULL pending VOID_PENDING, desired next READY
+0:00:00.070415194 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<videotestsrc0> completed state change to READY
+0:00:00.070426368 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<videotestsrc0> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.070445643 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'videotestsrc0' changed state to 2(READY) successfully
+0:00:00.070463382 31670      0x2284b20 INFO              GST_STATES gstelement.c:2305:gst_element_continue_state:<pipeline0> committing state from NULL to READY, pending PAUSED, next PAUSED
+0:00:00.070483635 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<pipeline0> notifying about state-changed NULL to READY (PAUSED pending)
+0:00:00.070530985 31670      0x2284b20 INFO              GST_STATES gstelement.c:2312:gst_element_continue_state:<pipeline0> continue state change READY to PAUSED, final PAUSED
+0:00:00.070563459 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtcpsink> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.070586226 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtcpsink> completed state change to PAUSED
+0:00:00.070598308 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtcpsink> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.070614650 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtcpsink' changed state to 3(PAUSED) successfully
+0:00:00.070630922 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink2> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.070651734 31670      0x2284b20 INFO              GST_STATES gstbin.c:2690:gst_bin_change_state_func:<pipeline0> child 'vrtpsink2' is changing state asynchronously to PAUSED
+0:00:00.070668145 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.070687351 31670      0x2284b20 INFO              GST_STATES gstbin.c:2690:gst_bin_change_state_func:<pipeline0> child 'vrtpsink' is changing state asynchronously to PAUSED
+0:00:00.070703134 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<mprtps> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.070721501 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<mprtps> completed state change to PAUSED
+0:00:00.070733234 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<mprtps> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.070749297 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'mprtps' changed state to 3(PAUSED) successfully
+0:00:00.070766477 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpbin> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.070793713 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpssrcdemux0> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.070812360 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpssrcdemux0> completed state change to PAUSED
+0:00:00.070824232 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpssrcdemux0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.070840993 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpssrcdemux0' changed state to 3(PAUSED) successfully
+0:00:00.070858034 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpsession0> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.070876960 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpsession0> completed state change to PAUSED
+0:00:00.070888692 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpsession0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.070905104 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpsession0' changed state to 3(PAUSED) successfully
+0:00:00.070931782 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpbin> completed state change to PAUSED
+0:00:00.070943724 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpbin> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.070960276 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtpbin' changed state to 3(PAUSED) successfully
+0:00:00.070978573 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtph263ppay0> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.070999664 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtph263ppay0> completed state change to PAUSED
+0:00:00.071011467 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtph263ppay0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.071034304 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtph263ppay0' changed state to 3(PAUSED) successfully
+0:00:00.071050017 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsrc> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.071074390 31670      0x2284b20 INFO                 basesrc gstbasesrc.c:1339:gst_base_src_do_seek:<vrtpsrc> seeking: time segment start=0:00:00.000000000, offset=0:00:00.000000000, stop=99:99:99.999999999, rate=1,000000, applied_rate=1,000000, flags=0x00, time=0:00:00.000000000, base=0:00:00.000000000, position 0:00:00.000000000, duration 99:99:99.999999999
+0:00:00.071117201 31670      0x2284b20 INFO                    task gsttask.c:446:gst_task_set_lock: setting stream lock 0x2431500 on task 0x24c2050
+0:00:00.071131308 31670      0x2284b20 INFO                GST_PADS gstpad.c:5748:gst_pad_start_task:<vrtpsrc:src> created task 0x24c2050
+0:00:00.071215462 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsrc> completed state change to PAUSED
+0:00:00.071230198 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsrc> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.071248356 31670      0x2284b20 INFO              GST_STATES gstbin.c:2727:gst_bin_change_state_func:<pipeline0> child 'vrtpsrc' changed state to 3(PAUSED) successfully without preroll
+0:00:00.071267142 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<avenc_h263p0> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.071282506 31670      0x24aa4a0 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'sink' in element "vrtpsrc"
+0:00:00.071706141 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<avenc_h263p0> completed state change to PAUSED
+0:00:00.071728628 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<avenc_h263p0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.071754329 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'avenc_h263p0' changed state to 3(PAUSED) successfully
+0:00:00.071772975 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<capsfilter0> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.071796231 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<capsfilter0> completed state change to PAUSED
+0:00:00.071808732 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<capsfilter0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.071834991 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'capsfilter0' changed state to 3(PAUSED) successfully
+0:00:00.071851962 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<videotestsrc0> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.071876754 31670      0x2284b20 INFO                 basesrc gstbasesrc.c:1339:gst_base_src_do_seek:<videotestsrc0> seeking: time segment start=0:00:00.000000000, offset=0:00:00.000000000, stop=99:99:99.999999999, rate=1,000000, applied_rate=1,000000, flags=0x00, time=0:00:00.000000000, base=0:00:00.000000000, position 0:00:00.000000000, duration 99:99:99.999999999
+0:00:00.071912581 31670      0x2284b20 INFO                    task gsttask.c:446:gst_task_set_lock: setting stream lock 0x2430300 on task 0x24c2170
+0:00:00.071926827 31670      0x2284b20 INFO                GST_PADS gstpad.c:5748:gst_pad_start_task:<videotestsrc0:src> created task 0x24c2170
+0:00:00.071984024 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<videotestsrc0> completed state change to PAUSED
+0:00:00.072009515 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<videotestsrc0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.072028092 31670      0x2284b20 INFO              GST_STATES gstbin.c:2727:gst_bin_change_state_func:<pipeline0> child 'videotestsrc0' changed state to 3(PAUSED) successfully without preroll
+0:00:00.072049672 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<pipeline0> completed state change to PAUSED
+0:00:00.072065664 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<pipeline0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+Pipeline is live and does not need PREROLL ...
+0:00:00.072090806 31670      0x24aa590 INFO        GST_ELEMENT_PADS gstelement.c:894:gst_element_get_static_pad: no such pad 'sink' in element "videotestsrc0"
+0:00:00.072147165 31670      0x24aa590 FIXME                default gstutils.c:3761:gst_pad_create_stream_id_internal:<videotestsrc0:src> Creating random stream-id, consider implementing a deterministic way of creating a stream-id
+0:00:00.072362614 31670      0x24aa590 INFO               GST_EVENT gstevent.c:679:gst_event_new_caps: creating caps event video/x-raw, format=(string)I420, width=(int)352, height=(int)288, framerate=(fraction)15/1, pixel-aspect-ratio=(fraction)1/1, interlace-mode=(string)progressive
+/GstPipeline:pipeline0/GstVideoTestSrc:videotestsrc0.GstPad:src: caps = "video/x-raw\,\ format\=\(string\)I420\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ pixel-aspect-ratio\=\(fraction\)1/1\,\ interlace-mode\=\(string\)progressive"
+0:00:00.072553619 31670      0x24aa590 INFO           basetransform gstbasetransform.c:1371:gst_base_transform_setcaps:<capsfilter0> reuse caps
+0:00:00.072571428 31670      0x24aa590 INFO               GST_EVENT gstevent.c:679:gst_event_new_caps: creating caps event video/x-raw, format=(string)I420, width=(int)352, height=(int)288, framerate=(fraction)15/1, pixel-aspect-ratio=(fraction)1/1, interlace-mode=(string)progressive
+/GstPipeline:pipeline0/GstCapsFilter:capsfilter0.GstPad:src: caps = "video/x-raw\,\ format\=\(string\)I420\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ pixel-aspect-ratio\=\(fraction\)1/1\,\ interlace-mode\=\(string\)progressive"
+Setting pipeline to PLAYING ...
+0:00:00.072811110 31670      0x2284b20 INFO               GST_EVENT gstevent.c:1245:gst_event_new_latency: creating latency event 0:00:00.000000000
+0:00:00.072862581 31670      0x2284b20 INFO                     bin gstbin.c:2502:gst_bin_do_latency_func:<pipeline0> configured latency of 0:00:00.000000000
+0:00:00.072901690 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtcpsink> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.072935281 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtcpsink> completed state change to PLAYING
+0:00:00.072948411 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtcpsink> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.072967686 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtcpsink' changed state to 4(PLAYING) successfully
+0:00:00.072986053 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink2> current READY pending PAUSED, desired next PLAYING
+0:00:00.073000370 31670      0x2284b20 INFO              GST_STATES gstbin.c:2690:gst_bin_change_state_func:<pipeline0> child 'vrtpsink2' is changing state asynchronously to PLAYING
+0:00:00.073017410 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink> current READY pending PAUSED, desired next PLAYING
+0:00:00.073031657 31670      0x2284b20 INFO              GST_STATES gstbin.c:2690:gst_bin_change_state_func:<pipeline0> child 'vrtpsink' is changing state asynchronously to PLAYING
+0:00:00.073048628 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<mprtps> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.073064970 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<mprtps> completed state change to PLAYING
+0:00:00.073077122 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<mprtps> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.073094441 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'mprtps' changed state to 4(PLAYING) successfully
+0:00:00.073113018 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpbin> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.073139067 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpssrcdemux0> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.073155340 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpssrcdemux0> completed state change to PLAYING
+0:00:00.073168329 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpssrcdemux0> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.073189001 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpssrcdemux0' changed state to 4(PLAYING) successfully
+0:00:00.073207229 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpsession0> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.073286914 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpsession0> completed state change to PLAYING
+0:00:00.073303395 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpsession0> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.073322531 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpsession0' changed state to 4(PLAYING) successfully
+0:00:00.073340619 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpbin> completed state change to PLAYING
+0:00:00.073352770 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpbin> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.073370649 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtpbin' changed state to 4(PLAYING) successfully
+0:00:00.073397885 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtph263ppay0> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.073414786 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtph263ppay0> completed state change to PLAYING
+0:00:00.073427008 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtph263ppay0> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.073444258 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtph263ppay0' changed state to 4(PLAYING) successfully
+0:00:00.073472123 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsrc> completed state change to PLAYING
+0:00:00.073485043 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsrc> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.073502712 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsrc' changed state to 4(PLAYING) successfully
+0:00:00.073520800 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<avenc_h263p0> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.073536653 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<avenc_h263p0> completed state change to PLAYING
+0:00:00.073548595 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<avenc_h263p0> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.073565286 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'avenc_h263p0' changed state to 4(PLAYING) successfully
+0:00:00.073582676 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<capsfilter0> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.073597062 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<capsfilter0> completed state change to PLAYING
+0:00:00.073608655 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<capsfilter0> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.073625626 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'capsfilter0' changed state to 4(PLAYING) successfully
+0:00:00.073643155 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<videotestsrc0> completed state change to PLAYING
+0:00:00.073655586 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<videotestsrc0> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.073672138 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'videotestsrc0' changed state to 4(PLAYING) successfully
+New clock: GstSystemClock
+/GstPipeline:pipeline0/avenc_h263p:avenc_h263p0.GstPad:sink: caps = "video/x-raw\,\ format\=\(string\)I420\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ pixel-aspect-ratio\=\(fraction\)1/1\,\ interlace-mode\=\(string\)progressive"
+/GstPipeline:pipeline0/GstCapsFilter:capsfilter0.GstPad:sink: caps = "video/x-raw\,\ format\=\(string\)I420\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ pixel-aspect-ratio\=\(fraction\)1/1\,\ interlace-mode\=\(string\)progressive"
+0:00:00.075214430 31670      0x24aa590 INFO               GST_EVENT gstevent.c:760:gst_event_new_segment: creating segment event time segment start=0:00:00.000000000, offset=0:00:00.000000000, stop=99:99:99.999999999, rate=1,000000, applied_rate=1,000000, flags=0x00, time=0:00:00.000000000, base=0:00:00.000000000, position 0:00:00.000000000, duration 99:99:99.999999999
+0:00:00.075272675 31670      0x24aa590 INFO                 basesrc gstbasesrc.c:2844:gst_base_src_loop:<videotestsrc0> marking pending DISCONT
+----10254----1
+0:00:00.079184623 31670      0x24aa590 INFO               GST_EVENT gstevent.c:679:gst_event_new_caps: creating caps event video/x-h263, variant=(string)itu, width=(int)352, height=(int)288, framerate=(fraction)15/1, h263version=(string)h263p, annex-f=(boolean)true, annex-j=(boolean)true, annex-i=(boolean)true, annex-t=(boolean)true, pixel-aspect-ratio=(fraction)1/1
+/GstPipeline:pipeline0/avenc_h263p:avenc_h263p0.GstPad:src: caps = "video/x-h263\,\ variant\=\(string\)itu\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ h263version\=\(string\)h263p\,\ annex-f\=\(boolean\)true\,\ annex-j\=\(boolean\)true\,\ annex-i\=\(boolean\)true\,\ annex-t\=\(boolean\)true\,\ pixel-aspect-ratio\=\(fraction\)1/1"
+0:00:00.079401957 31670      0x24aa590 INFO               GST_EVENT gstevent.c:679:gst_event_new_caps: creating caps event application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H263-1998, payload=(int)96, ssrc=(uint)1812593586, timestamp-offset=(uint)1988846721, seqnum-offset=(uint)20233
+/GstPipeline:pipeline0/GstRtpH263PPay:rtph263ppay0.GstPad:src: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)1812593586\,\ timestamp-offset\=\(uint\)1988846721\,\ seqnum-offset\=\(uint\)20233"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtp_sink_2.GstProxyPad:proxypad1: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)1812593586\,\ timestamp-offset\=\(uint\)1988846721\,\ seqnum-offset\=\(uint\)20233"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin/GstRtpSession:rtpsession0.GstPad:send_rtp_src: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)1812593586\,\ timestamp-offset\=\(uint\)1988846721\,\ seqnum-offset\=\(uint\)20233"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtp_src_2: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)1812593586\,\ timestamp-offset\=\(uint\)1988846721\,\ seqnum-offset\=\(uint\)20233"
+----12814----/GstPipeline:pipeline0/GstMprtpSender:mprtps.GstPad:mprtp_src_1: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)1812593586\,\ timestamp-offset\=\(uint\)1988846721\,\ seqnum-offset\=\(uint\)20233"
+/GstPipeline:pipeline0/GstUDPSink:vrtpsink.GstPad:sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)1812593586\,\ timestamp-offset\=\(uint\)1988846721\,\ seqnum-offset\=\(uint\)20233"
+/GstPipeline:pipeline0/GstMprtpSender:mprtps.GstPad:mprtp_src_2: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)1812593586\,\ timestamp-offset\=\(uint\)1988846721\,\ seqnum-offset\=\(uint\)20233"
+/GstPipeline:pipeline0/GstUDPSink:vrtpsink2.GstPad:sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)1812593586\,\ timestamp-offset\=\(uint\)1988846721\,\ seqnum-offset\=\(uint\)20233"
+1
+/GstPipeline:pipeline0/GstMprtpSender:mprtps.GstPad:mprtp_sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)1812593586\,\ timestamp-offset\=\(uint\)1988846721\,\ seqnum-offset\=\(uint\)20233"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtp_src_2.GstProxyPad:proxypad0: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)1812593586\,\ timestamp-offset\=\(uint\)1988846721\,\ seqnum-offset\=\(uint\)20233"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin/GstRtpSession:rtpsession0.GstPad:send_rtp_sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)1812593586\,\ timestamp-offset\=\(uint\)1988846721\,\ seqnum-offset\=\(uint\)20233"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtp_sink_2: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)1812593586\,\ timestamp-offset\=\(uint\)1988846721\,\ seqnum-offset\=\(uint\)20233"
+/GstPipeline:pipeline0/GstRtpH263PPay:rtph263ppay0.GstPad:sink: caps = "video/x-h263\,\ variant\=\(string\)itu\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ h263version\=\(string\)h263p\,\ annex-f\=\(boolean\)true\,\ annex-j\=\(boolean\)true\,\ annex-i\=\(boolean\)true\,\ annex-t\=\(boolean\)true\,\ pixel-aspect-ratio\=\(fraction\)1/1"
+/GstPipeline:pipeline0/GstRtpH263PPay:rtph263ppay0: timestamp = 1988846944
+/GstPipeline:pipeline0/GstRtpH263PPay:rtph263ppay0: seqnum = 20233
+----17934----1
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                          20233|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                     1988846944|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                139751458470834|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x1     =     1|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+handling interrupt.
+Interrupt: Stopping pipeline ...
+Execution ended after 0:00:00.397263926
+Setting pipeline to PAUSED ...
+0:00:00.471065612 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtcpsink> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:00.471118898 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtcpsink> completed state change to PAUSED
+0:00:00.471142154 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtcpsink> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:00.471179796 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtcpsink' changed state to 3(PAUSED) successfully
+0:00:00.471212341 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink2> current READY pending PAUSED, desired next PAUSED
+0:00:00.471235317 31670      0x2284b20 INFO              GST_STATES gstbin.c:2347:gst_bin_element_set_state:<vrtpsink2> skipping transition from READY to  PAUSED
+0:00:00.471255570 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsink2' changed state to 3(PAUSED) successfully
+0:00:00.471284064 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink> current PAUSED pending VOID_PENDING, desired next PAUSED
+0:00:00.471325687 31670      0x2284b20 INFO              GST_STATES gstbin.c:2347:gst_bin_element_set_state:<vrtpsink> skipping transition from PAUSED to  PAUSED
+0:00:00.471347197 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsink' changed state to 3(PAUSED) successfully
+0:00:00.471376109 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<mprtps> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:00.471402648 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<mprtps> completed state change to PAUSED
+0:00:00.471422691 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<mprtps> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:00.471452162 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'mprtps' changed state to 3(PAUSED) successfully
+0:00:00.471483799 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpbin> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:00.471529473 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpssrcdemux0> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:00.471556011 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpssrcdemux0> completed state change to PAUSED
+0:00:00.471576194 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpssrcdemux0> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:00.471606643 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpssrcdemux0' changed state to 3(PAUSED) successfully
+0:00:00.471636813 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpsession0> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:00.471675922 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpsession0> completed state change to PAUSED
+0:00:00.471697432 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpsession0> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:00.471728439 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpsession0' changed state to 3(PAUSED) successfully
+0:00:00.471757562 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpbin> completed state change to PAUSED
+0:00:00.471778234 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpbin> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:00.471808683 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtpbin' changed state to 3(PAUSED) successfully
+0:00:00.471852680 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtph263ppay0> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:00.471880266 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtph263ppay0> completed state change to PAUSED
+0:00:00.471900519 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtph263ppay0> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:00.471929222 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtph263ppay0' changed state to 3(PAUSED) successfully
+0:00:00.471956459 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsrc> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:00.472067710 31670      0x24aa4a0 INFO                 basesrc gstbasesrc.c:2740:gst_base_src_loop:<vrtpsrc> pausing after gst_base_src_get_range() = flushing
+0:00:00.472113244 31670      0x24aa4a0 INFO                    task gsttask.c:315:gst_task_func:<vrtpsrc:src> Task going to paused
+0:00:00.472131960 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsrc> completed state change to PAUSED
+0:00:00.472155565 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsrc> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:00.472185176 31670      0x2284b20 INFO              GST_STATES gstbin.c:2727:gst_bin_change_state_func:<pipeline0> child 'vrtpsrc' changed state to 3(PAUSED) successfully without preroll
+0:00:00.472216464 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<avenc_h263p0> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:00.472243211 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<avenc_h263p0> completed state change to PAUSED
+0:00:00.472262906 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<avenc_h263p0> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:00.472291539 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'avenc_h263p0' changed state to 3(PAUSED) successfully
+0:00:00.472321290 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<capsfilter0> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:00.472346641 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<capsfilter0> completed state change to PAUSED
+0:00:00.472366474 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<capsfilter0> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:00.472394479 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'capsfilter0' changed state to 3(PAUSED) successfully
+0:00:00.472421367 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<videotestsrc0> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:00.472446788 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<videotestsrc0> completed state change to PAUSED
+0:00:00.472466621 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<videotestsrc0> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:00.472506359 31670      0x2284b20 INFO              GST_STATES gstbin.c:2727:gst_bin_change_state_func:<pipeline0> child 'videotestsrc0' changed state to 3(PAUSED) successfully without preroll
+0:00:00.472541138 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<pipeline0> completed state change to PAUSED
+0:00:00.472561600 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<pipeline0> notifying about state-changed PAUSED to PAUSED (VOID_PENDING pending)
+Setting pipeline to READY ...
+0:00:00.472692965 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtcpsink> current PAUSED pending VOID_PENDING, desired next READY
+0:00:00.472737870 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtcpsink> completed state change to READY
+0:00:00.472760148 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtcpsink> notifying about state-changed PAUSED to READY (VOID_PENDING pending)
+0:00:00.472791296 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtcpsink' changed state to 2(READY) successfully
+0:00:00.472834595 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink2> current READY pending PAUSED, desired next READY
+0:00:00.472891932 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsink2> completed state change to READY
+0:00:00.472913372 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsink2> notifying about state-changed READY to READY (VOID_PENDING pending)
+0:00:00.472942773 31670      0x2284b20 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsink2' changed state to 2(READY) successfully
+0:00:00.472972594 31670      0x2284b20 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink> current PAUSED pending VOID_PENDING, desired next READY
+0:00:00.473090829 31670      0x2284b20 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsink> completed state change to READY
+0:00:00.473115691 31670      0x2284b20 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsink> notifying about state-changed PAUSED to READY (VOID_PENDING pending)
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                          20234|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                     1988846944|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                139751458470834|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x2     =     2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                          20235|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                     1988846944|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                139751458470834|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x3     =     3|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                          20236|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                     1988846944|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                139751458470834|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x4     =     4|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                          20237|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                     1988846944|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                139751458470834|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x5     =     5|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                          20238|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                     1988846944|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                139751458470834|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x6     =     6|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                          20239|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                     1988846944|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                139751458470834|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x7     =     7|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+Caught SIGSEGV
+0:00:00.473817139 31670      0x24aa590 INFO                 basesrc gstbasesrc.c:2857:gst_base_src_loop:<videotestsrc0> pausing after gst_pad_push() = flushing
+0:00:00.474782363 31670      0x24aa590 INFO                    task gsttask.c:315:gst_task_func:<videotestsrc0:src> Task going to paused
+Spinning.  Please run 'gdb gst-launch-1.0 31670' to continue debugging, Ctrl-C to quit, or Ctrl-\ to dump core.

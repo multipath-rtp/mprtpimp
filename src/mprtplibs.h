@@ -11,9 +11,11 @@
 
 GST_DEBUG_CATEGORY_STATIC (gst_mprtp_receiver_debug);
 GST_DEBUG_CATEGORY_STATIC (gst_mprtp_sender_debug);
+GST_DEBUG_CATEGORY_STATIC (gst_mprtcp_receiver_debug);
 
 //defines the RTP header extension one byte local ID
 #define MPRTP_EXT_HEADER_ID 3
+#define MPRTCP_PACKET_TYPE_IDENTIFIER 211
 
 //#define GST_MPRTP_PAD_CAPS "application/x-rtp"
 #define GST_MPRTP_PAD_CAPS GST_STATIC_CAPS_ANY

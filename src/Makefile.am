@@ -16,6 +16,7 @@ plugin_LTLIBRARIES = libgstmprtpimp.la
 # sources used to compile this plug-in
 libgstmprtpimp_la_SOURCES = gstmprtpsender.c gstmprtpsender.h \ 
                             gstmprtpreceiver.c gstmprtpreceiver.h \ 
+                            gstmprtcpreceiver.c gstmprtcpreceiver.h \ 
                             mprtplibs.h mprtpimp.c
 
 # compiler and linker flags used to compile this plugin, set in configure.ac

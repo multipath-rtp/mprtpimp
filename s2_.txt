@@ -1,0 +1,904 @@
+mprtpsender name=mprtps rtpbin name=rtpbin videotestsrc is-live=1 ! video/x-raw,width=352,height=288,framerate=15/1 ! avenc_h263p ! rtph263ppay ! rtpbin.send_rtp_sink_2 rtpbin.send_rtp_src_2 ! mprtps.mprtp_sink mprtps.mprtp_src_1 ! udpsink port=5000 host=127.0.0.1 ts-offset=0 name=vrtpsink mprtps.mprtp_src_2 ! udpsink port=5010 host=127.0.0.2 ts-offset=0 name=vrtpsink2 rtpbin.send_rtcp_src_2 ! udpsink port=5001 host=127.0.0.1 sync=false async=false name=vrtcpsink udpsrc port=5005 name=vrtpsrc ! rtpbin.recv_rtcp_sink_2
+
+(gst-launch-1.0:8910): GLib-GObject-CRITICAL **: g_param_spec_internal: assertion '!(flags & G_PARAM_STATIC_NAME) || is_canonical (name)' failed
+
+(gst-launch-1.0:8910): GLib-GObject-CRITICAL **: g_object_class_install_property: assertion 'G_IS_PARAM_SPEC (pspec)' failed
+0:00:00.069005544  8910       0xb40cc0 INFO              GST_STATES gstbin.c:1829:gst_bin_get_state_func:<pipeline0> getting state
+0:00:00.069069447  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<pipeline0> getting state, timeout 0:00:00.000000000
+0:00:00.069093123  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<pipeline0> RETURN is SUCCESS
+0:00:00.069108278  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<pipeline0> state current: NULL, pending: VOID_PENDING, result: SUCCESS
+0:00:00.069138309  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<capsfilter0> set_state to NULL
+0:00:00.069152696  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<capsfilter0> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.069167013  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<capsfilter0> final: setting state from NULL to NULL
+0:00:00.069181609  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2840:gst_element_change_state_func:<capsfilter0> element is already in the NULL state
+0:00:00.069193901  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<capsfilter0> element changed state SUCCESS
+0:00:00.069204726  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<capsfilter0> completed state change to NULL
+0:00:00.069217995  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<capsfilter0> returned SUCCESS
+0:00:00.070016607  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpssrcdemux0> set_state to NULL
+0:00:00.070036162  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpssrcdemux0> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.070050060  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpssrcdemux0> final: setting state from NULL to NULL
+0:00:00.070064168  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2840:gst_element_change_state_func:<rtpssrcdemux0> element is already in the NULL state
+0:00:00.070075831  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpssrcdemux0> element changed state SUCCESS
+0:00:00.070086237  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpssrcdemux0> completed state change to NULL
+0:00:00.070097691  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpssrcdemux0> returned SUCCESS
+0:00:00.070108795  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpsession0> set_state to NULL
+0:00:00.070120109  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpsession0> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.070138337  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpsession0> final: setting state from NULL to NULL
+0:00:00.070169905  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2840:gst_element_change_state_func:<rtpsession0> element is already in the NULL state
+0:00:00.070181847  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpsession0> element changed state SUCCESS
+0:00:00.070191834  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpsession0> completed state change to NULL
+0:00:00.070203078  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpsession0> returned SUCCESS
+
+(gst-launch-1.0:8910): GStreamer-CRITICAL **: gst_mini_object_ref: assertion 'mini_object != NULL' failed
+Requested pad name: mprtp_src_1
+
+NEW PAD REQUESTED
+
+Requested pad name: mprtp_src_2
+
+NEW PAD REQUESTED
+
+Setting pipeline to PAUSED ...
+0:00:00.071095973  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<pipeline0> set_state to PAUSED
+0:00:00.071110360  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<pipeline0> setting target state to PAUSED
+0:00:00.071122163  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<pipeline0> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.071136271  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<pipeline0> intermediate: setting state from NULL to READY
+0:00:00.071153870  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2573:gst_bin_change_state_func:<pipeline0> changing state of children from NULL to READY
+0:00:00.071189767  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtcpsink> current NULL pending VOID_PENDING, desired next READY
+0:00:00.071205481  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtcpsink> set_state to READY
+0:00:00.071217284  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtcpsink> setting target state to READY
+0:00:00.071228319  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtcpsink> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.071241518  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtcpsink> final: setting state from NULL to READY
+0:00:00.071438814  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<vrtcpsink> element changed state SUCCESS
+0:00:00.071452782  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtcpsink> completed state change to READY
+0:00:00.071465144  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtcpsink> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.071509212  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtcpsink> returned SUCCESS
+0:00:00.071522063  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtcpsink' changed state to 2(READY) successfully
+0:00:00.071541338  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink2> current NULL pending VOID_PENDING, desired next READY
+0:00:00.071556074  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtpsink2> set_state to READY
+0:00:00.071568296  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtpsink2> setting target state to READY
+0:00:00.071579959  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtpsink2> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.071605521  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtpsink2> final: setting state from NULL to READY
+0:00:00.071682972  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<vrtpsink2> element changed state SUCCESS
+0:00:00.071696870  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsink2> completed state change to READY
+0:00:00.071709511  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsink2> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.071733536  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtpsink2> returned SUCCESS
+0:00:00.071745339  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsink2' changed state to 2(READY) successfully
+0:00:00.071762938  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink> current NULL pending VOID_PENDING, desired next READY
+0:00:00.071776627  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtpsink> set_state to READY
+0:00:00.071788011  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtpsink> setting target state to READY
+0:00:00.071799115  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtpsink> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.071812245  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtpsink> final: setting state from NULL to READY
+0:00:00.071880827  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<vrtpsink> element changed state SUCCESS
+0:00:00.071892839  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsink> completed state change to READY
+0:00:00.071904572  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsink> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.071922591  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtpsink> returned SUCCESS
+0:00:00.071934114  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsink' changed state to 2(READY) successfully
+0:00:00.071951365  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<mprtps> current NULL pending VOID_PENDING, desired next READY
+0:00:00.071965053  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<mprtps> set_state to READY
+0:00:00.071976297  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<mprtps> setting target state to READY
+0:00:00.071987332  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<mprtps> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.072000392  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<mprtps> final: setting state from NULL to READY
+0:00:00.072013941  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<mprtps> element changed state SUCCESS
+0:00:00.072023858  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<mprtps> completed state change to READY
+0:00:00.072035242  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<mprtps> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.072051933  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<mprtps> returned SUCCESS
+0:00:00.072070860  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'mprtps' changed state to 2(READY) successfully
+0:00:00.072088808  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpbin> current NULL pending VOID_PENDING, desired next READY
+0:00:00.072102357  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpbin> set_state to READY
+0:00:00.072113531  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtpbin> setting target state to READY
+0:00:00.072124566  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpbin> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.072139232  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpbin> final: setting state from NULL to READY
+0:00:00.072152641  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2573:gst_bin_change_state_func:<rtpbin> changing state of children from NULL to READY
+0:00:00.072183091  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpssrcdemux0> current NULL pending VOID_PENDING, desired next READY
+0:00:00.072197269  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpssrcdemux0> set_state to READY
+0:00:00.072208443  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtpssrcdemux0> setting target state to READY
+0:00:00.072219338  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpssrcdemux0> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.072232398  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpssrcdemux0> final: setting state from NULL to READY
+0:00:00.072245388  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpssrcdemux0> element changed state SUCCESS
+0:00:00.072255864  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpssrcdemux0> completed state change to READY
+0:00:00.072267038  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpssrcdemux0> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.072285266  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpssrcdemux0> returned SUCCESS
+0:00:00.072296720  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpssrcdemux0' changed state to 2(READY) successfully
+0:00:00.072313342  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpsession0> current NULL pending VOID_PENDING, desired next READY
+0:00:00.072326681  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpsession0> set_state to READY
+0:00:00.072337785  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtpsession0> setting target state to READY
+0:00:00.072348680  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpsession0> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.072361810  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpsession0> final: setting state from NULL to READY
+0:00:00.072426132  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpsession0> element changed state SUCCESS
+0:00:00.072439960  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpsession0> completed state change to READY
+0:00:00.072460982  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpsession0> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.072480886  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpsession0> returned SUCCESS
+0:00:00.072492968  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpsession0' changed state to 2(READY) successfully
+0:00:00.072507983  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2743:gst_bin_change_state_func:<rtpbin> iterator done
+0:00:00.072522719  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2812:gst_bin_change_state_func:<rtpbin> done changing bin's state from NULL to READY, now in NULL, ret SUCCESS
+0:00:00.072537106  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpbin> element changed state SUCCESS
+0:00:00.072547722  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpbin> completed state change to READY
+0:00:00.072559664  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpbin> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.072577473  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpbin> returned SUCCESS
+0:00:00.072589416  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtpbin' changed state to 2(READY) successfully
+0:00:00.072607295  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtph263ppay0> current NULL pending VOID_PENDING, desired next READY
+0:00:00.072621262  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtph263ppay0> set_state to READY
+0:00:00.072632995  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtph263ppay0> setting target state to READY
+0:00:00.072644519  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtph263ppay0> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.072659604  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtph263ppay0> final: setting state from NULL to READY
+0:00:00.072677553  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtph263ppay0> element changed state SUCCESS
+0:00:00.072688657  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtph263ppay0> completed state change to READY
+0:00:00.072700530  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtph263ppay0> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.072718409  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtph263ppay0> returned SUCCESS
+0:00:00.072730351  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtph263ppay0' changed state to 2(READY) successfully
+0:00:00.072745925  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsrc> current NULL pending VOID_PENDING, desired next READY
+0:00:00.072760033  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtpsrc> set_state to READY
+0:00:00.072771626  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtpsrc> setting target state to READY
+0:00:00.072782940  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtpsrc> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.072797117  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtpsrc> final: setting state from NULL to READY
+0:00:00.072872614  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<vrtpsrc> element changed state SUCCESS
+0:00:00.072885185  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsrc> completed state change to READY
+0:00:00.072897756  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsrc> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.072915704  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtpsrc> returned SUCCESS
+0:00:00.072927786  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsrc' changed state to 2(READY) successfully
+0:00:00.072946224  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<avenc_h263p0> current NULL pending VOID_PENDING, desired next READY
+0:00:00.072960332  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<avenc_h263p0> set_state to READY
+0:00:00.072972134  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<avenc_h263p0> setting target state to READY
+0:00:00.072983797  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<avenc_h263p0> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.072997905  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<avenc_h263p0> final: setting state from NULL to READY
+0:00:00.073012152  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<avenc_h263p0> element changed state SUCCESS
+0:00:00.073022698  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<avenc_h263p0> completed state change to READY
+0:00:00.073034501  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<avenc_h263p0> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.073057478  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<avenc_h263p0> returned SUCCESS
+0:00:00.073069979  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'avenc_h263p0' changed state to 2(READY) successfully
+0:00:00.073087718  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<capsfilter0> current NULL pending VOID_PENDING, desired next READY
+0:00:00.073102035  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<capsfilter0> set_state to READY
+0:00:00.073113838  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<capsfilter0> setting target state to READY
+0:00:00.073125082  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<capsfilter0> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.073138910  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<capsfilter0> final: setting state from NULL to READY
+0:00:00.073152249  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<capsfilter0> element changed state SUCCESS
+0:00:00.073162656  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<capsfilter0> completed state change to READY
+0:00:00.073174249  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<capsfilter0> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.073191429  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<capsfilter0> returned SUCCESS
+0:00:00.073209727  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'capsfilter0' changed state to 2(READY) successfully
+0:00:00.073225930  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<videotestsrc0> current NULL pending VOID_PENDING, desired next READY
+0:00:00.073240107  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<videotestsrc0> set_state to READY
+0:00:00.073251840  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<videotestsrc0> setting target state to READY
+0:00:00.073263364  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<videotestsrc0> current NULL, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.073276912  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<videotestsrc0> final: setting state from NULL to READY
+0:00:00.073290531  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<videotestsrc0> element changed state SUCCESS
+0:00:00.073301007  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<videotestsrc0> completed state change to READY
+0:00:00.073312740  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<videotestsrc0> notifying about state-changed NULL to READY (VOID_PENDING pending)
+0:00:00.073333622  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<videotestsrc0> returned SUCCESS
+0:00:00.073345704  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'videotestsrc0' changed state to 2(READY) successfully
+0:00:00.073361278  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2743:gst_bin_change_state_func:<pipeline0> iterator done
+0:00:00.073374757  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2812:gst_bin_change_state_func:<pipeline0> done changing bin's state from NULL to READY, now in NULL, ret SUCCESS
+0:00:00.073388725  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<pipeline0> element changed state SUCCESS
+0:00:00.073399340  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2305:gst_element_continue_state:<pipeline0> committing state from NULL to READY, pending PAUSED, next PAUSED
+0:00:00.073412889  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<pipeline0> notifying about state-changed NULL to READY (PAUSED pending)
+0:00:00.073495718  8910       0xb40cc0 INFO              GST_STATES gstbin.c:1829:gst_bin_get_state_func:<pipeline0> getting state
+0:00:00.073508289  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<pipeline0> getting state, timeout 0:00:00.000000000
+0:00:00.073522816  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<pipeline0> RETURN is ASYNC
+0:00:00.073534339  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2048:gst_element_get_state_func:<pipeline0> waiting for element to commit state
+0:00:00.073610464  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2062:gst_element_get_state_func:<pipeline0> timed out
+0:00:00.073622127  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<pipeline0> state current: READY, pending: PAUSED, result: ASYNC
+0:00:00.073675973  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<capsfilter0> getting state, timeout 0:00:00.000000000
+0:00:00.073691198  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<capsfilter0> RETURN is SUCCESS
+0:00:00.073702931  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<capsfilter0> state current: READY, pending: VOID_PENDING, result: SUCCESS
+0:00:00.073809296  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<vrtpsrc> getting state, timeout 0:00:00.000000000
+0:00:00.073825639  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<vrtpsrc> RETURN is SUCCESS
+0:00:00.073837372  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<vrtpsrc> state current: READY, pending: VOID_PENDING, result: SUCCESS
+0:00:00.073938359  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<vrtcpsink> getting state, timeout 0:00:00.000000000
+0:00:00.073954073  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<vrtcpsink> RETURN is SUCCESS
+0:00:00.073965876  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<vrtcpsink> state current: READY, pending: VOID_PENDING, result: SUCCESS
+0:00:00.074079294  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<vrtpsink2> getting state, timeout 0:00:00.000000000
+0:00:00.074094380  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<vrtpsink2> RETURN is SUCCESS
+0:00:00.074106182  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<vrtpsink2> state current: READY, pending: VOID_PENDING, result: SUCCESS
+0:00:00.074209195  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<vrtpsink> getting state, timeout 0:00:00.000000000
+0:00:00.074224211  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<vrtpsink> RETURN is SUCCESS
+0:00:00.074235944  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<vrtpsink> state current: READY, pending: VOID_PENDING, result: SUCCESS
+0:00:00.074338677  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<rtph263ppay0> getting state, timeout 0:00:00.000000000
+0:00:00.074353134  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<rtph263ppay0> RETURN is SUCCESS
+0:00:00.074365006  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<rtph263ppay0> state current: READY, pending: VOID_PENDING, result: SUCCESS
+0:00:00.074499167  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<avenc_h263p0> getting state, timeout 0:00:00.000000000
+0:00:00.074515440  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<avenc_h263p0> RETURN is SUCCESS
+0:00:00.074527662  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<avenc_h263p0> state current: READY, pending: VOID_PENDING, result: SUCCESS
+0:00:00.074674394  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<videotestsrc0> getting state, timeout 0:00:00.000000000
+0:00:00.074689968  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<videotestsrc0> RETURN is SUCCESS
+0:00:00.074701980  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<videotestsrc0> state current: READY, pending: VOID_PENDING, result: SUCCESS
+0:00:00.074821056  8910       0xb40cc0 INFO              GST_STATES gstbin.c:1829:gst_bin_get_state_func:<rtpbin> getting state
+0:00:00.074833208  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<rtpbin> getting state, timeout 0:00:00.000000000
+0:00:00.074847874  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<rtpbin> RETURN is SUCCESS
+0:00:00.074859607  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<rtpbin> state current: READY, pending: VOID_PENDING, result: SUCCESS
+0:00:00.074988600  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<rtpssrcdemux0> getting state, timeout 0:00:00.000000000
+0:00:00.075004244  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<rtpssrcdemux0> RETURN is SUCCESS
+0:00:00.075016536  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<rtpssrcdemux0> state current: READY, pending: VOID_PENDING, result: SUCCESS
+0:00:00.075069474  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<rtpsession0> getting state, timeout 0:00:00.000000000
+0:00:00.075084070  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<rtpsession0> RETURN is SUCCESS
+0:00:00.075095803  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<rtpsession0> state current: READY, pending: VOID_PENDING, result: SUCCESS
+0:00:00.075282832  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<mprtps> getting state, timeout 0:00:00.000000000
+0:00:00.075299384  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<mprtps> RETURN is SUCCESS
+0:00:00.075311327  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<mprtps> state current: READY, pending: VOID_PENDING, result: SUCCESS
+0:00:00.075472096  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2312:gst_element_continue_state:<pipeline0> continue state change READY to PAUSED, final PAUSED
+0:00:00.075490674  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2573:gst_bin_change_state_func:<pipeline0> changing state of children from READY to PAUSED
+0:00:00.075523987  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtcpsink> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.075539002  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtcpsink> set_state to PAUSED
+0:00:00.075551015  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtcpsink> setting target state to PAUSED
+0:00:00.075562678  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtcpsink> current READY, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.075576436  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtcpsink> final: setting state from READY to PAUSED
+0:00:00.075600251  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<vrtcpsink> element changed state SUCCESS
+0:00:00.075611845  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtcpsink> completed state change to PAUSED
+0:00:00.075624136  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtcpsink> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.075642713  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtcpsink> returned SUCCESS
+0:00:00.075654796  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtcpsink' changed state to 3(PAUSED) successfully
+0:00:00.075672395  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink2> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.075686712  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtpsink2> set_state to PAUSED
+0:00:00.075698585  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtpsink2> setting target state to PAUSED
+0:00:00.075717232  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtpsink2> current READY, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.075731898  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtpsink2> final: setting state from READY to PAUSED
+0:00:00.075748520  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:3101:bin_handle_async_start:<pipeline0> state change busy
+0:00:00.075764722  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2620:gst_element_change_state:<vrtpsink2> element will change state ASYNC
+0:00:00.075775827  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtpsink2> returned ASYNC
+0:00:00.075787699  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2690:gst_bin_change_state_func:<pipeline0> child 'vrtpsink2' is changing state asynchronously to PAUSED
+0:00:00.075804112  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.075818219  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtpsink> set_state to PAUSED
+0:00:00.075829952  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtpsink> setting target state to PAUSED
+0:00:00.075841336  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtpsink> current READY, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.075855304  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtpsink> final: setting state from READY to PAUSED
+0:00:00.075870459  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:3101:bin_handle_async_start:<pipeline0> state change busy
+0:00:00.075885474  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2620:gst_element_change_state:<vrtpsink> element will change state ASYNC
+0:00:00.075896718  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtpsink> returned ASYNC
+0:00:00.075908242  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2690:gst_bin_change_state_func:<pipeline0> child 'vrtpsink' is changing state asynchronously to PAUSED
+0:00:00.075924305  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<mprtps> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.075938133  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<mprtps> set_state to PAUSED
+0:00:00.075949866  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<mprtps> setting target state to PAUSED
+0:00:00.075961180  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<mprtps> current READY, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.075974659  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<mprtps> final: setting state from READY to PAUSED
+0:00:00.075993306  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<mprtps> element changed state SUCCESS
+0:00:00.076004341  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<mprtps> completed state change to PAUSED
+0:00:00.076016213  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<mprtps> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.076034441  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<mprtps> returned SUCCESS
+0:00:00.076046454  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'mprtps' changed state to 3(PAUSED) successfully
+0:00:00.076064821  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpbin> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.076085913  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpbin> set_state to PAUSED
+0:00:00.076098204  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtpbin> setting target state to PAUSED
+0:00:00.076109658  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpbin> current READY, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.076123207  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpbin> final: setting state from READY to PAUSED
+0:00:00.076137244  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2573:gst_bin_change_state_func:<rtpbin> changing state of children from READY to PAUSED
+0:00:00.076164412  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpssrcdemux0> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.076179218  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpssrcdemux0> set_state to PAUSED
+0:00:00.076191090  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtpssrcdemux0> setting target state to PAUSED
+0:00:00.076202474  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpssrcdemux0> current READY, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.076216093  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpssrcdemux0> final: setting state from READY to PAUSED
+0:00:00.076233902  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpssrcdemux0> element changed state SUCCESS
+0:00:00.076244797  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpssrcdemux0> completed state change to PAUSED
+0:00:00.076256809  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpssrcdemux0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.076275107  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpssrcdemux0> returned SUCCESS
+0:00:00.076287189  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpssrcdemux0' changed state to 3(PAUSED) successfully
+0:00:00.076304369  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpsession0> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.076318198  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpsession0> set_state to PAUSED
+0:00:00.076329861  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtpsession0> setting target state to PAUSED
+0:00:00.076341175  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpsession0> current READY, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.076354933  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpsession0> final: setting state from READY to PAUSED
+0:00:00.076394183  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpsession0> element changed state SUCCESS
+0:00:00.076407941  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpsession0> completed state change to PAUSED
+0:00:00.076425331  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpsession0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.076443838  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpsession0> returned SUCCESS
+0:00:00.076462765  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpsession0' changed state to 3(PAUSED) successfully
+0:00:00.076478339  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2743:gst_bin_change_state_func:<rtpbin> iterator done
+0:00:00.076495100  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2812:gst_bin_change_state_func:<rtpbin> done changing bin's state from READY to PAUSED, now in READY, ret SUCCESS
+0:00:00.076509348  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpbin> element changed state SUCCESS
+0:00:00.076520033  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpbin> completed state change to PAUSED
+0:00:00.076531696  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpbin> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.076548807  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpbin> returned SUCCESS
+0:00:00.076560819  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtpbin' changed state to 3(PAUSED) successfully
+0:00:00.076577930  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtph263ppay0> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.076592107  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtph263ppay0> set_state to PAUSED
+0:00:00.076603910  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtph263ppay0> setting target state to PAUSED
+0:00:00.076615503  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtph263ppay0> current READY, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.076629541  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtph263ppay0> final: setting state from READY to PAUSED
+0:00:00.076649375  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtph263ppay0> element changed state SUCCESS
+0:00:00.076660410  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtph263ppay0> completed state change to PAUSED
+0:00:00.076672213  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtph263ppay0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.076695399  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtph263ppay0> returned SUCCESS
+0:00:00.076707621  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtph263ppay0' changed state to 3(PAUSED) successfully
+0:00:00.076723335  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsrc> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.076737443  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtpsrc> set_state to PAUSED
+0:00:00.076749106  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtpsrc> setting target state to PAUSED
+0:00:00.076760490  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtpsrc> current READY, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.076774248  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtpsrc> final: setting state from READY to PAUSED
+0:00:00.076880054  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2645:gst_element_change_state:<vrtpsrc> element changed state NO_PREROLL
+0:00:00.076902054  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsrc> completed state change to PAUSED
+0:00:00.076915253  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsrc> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.076933691  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtpsrc> returned NO PREROLL
+0:00:00.076945983  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2727:gst_bin_change_state_func:<pipeline0> child 'vrtpsrc' changed state to 3(PAUSED) successfully without preroll
+0:00:00.076964001  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<avenc_h263p0> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.076978667  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<avenc_h263p0> set_state to PAUSED
+0:00:00.076990680  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<avenc_h263p0> setting target state to PAUSED
+0:00:00.077002553  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<avenc_h263p0> current READY, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.077016660  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<avenc_h263p0> final: setting state from READY to PAUSED
+0:00:00.077442470  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<avenc_h263p0> element changed state SUCCESS
+0:00:00.077454832  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<avenc_h263p0> completed state change to PAUSED
+0:00:00.077466984  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<avenc_h263p0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.077484443  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<avenc_h263p0> returned SUCCESS
+0:00:00.077496386  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'avenc_h263p0' changed state to 3(PAUSED) successfully
+0:00:00.077513985  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<capsfilter0> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.077528372  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<capsfilter0> set_state to PAUSED
+0:00:00.077540036  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<capsfilter0> setting target state to PAUSED
+0:00:00.077551419  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<capsfilter0> current READY, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.077565248  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<capsfilter0> final: setting state from READY to PAUSED
+0:00:00.077586688  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<capsfilter0> element changed state SUCCESS
+0:00:00.077598072  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<capsfilter0> completed state change to PAUSED
+0:00:00.077609735  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<capsfilter0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.077626916  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<capsfilter0> returned SUCCESS
+0:00:00.077638788  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'capsfilter0' changed state to 3(PAUSED) successfully
+0:00:00.077662953  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<videotestsrc0> current READY pending VOID_PENDING, desired next PAUSED
+0:00:00.077677409  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<videotestsrc0> set_state to PAUSED
+0:00:00.077689212  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<videotestsrc0> setting target state to PAUSED
+0:00:00.077700526  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<videotestsrc0> current READY, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.077714215  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<videotestsrc0> final: setting state from READY to PAUSED
+0:00:00.077786359  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2645:gst_element_change_state:<videotestsrc0> element changed state NO_PREROLL
+0:00:00.077799628  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<videotestsrc0> completed state change to PAUSED
+0:00:00.077812828  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<videotestsrc0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.077830986  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<videotestsrc0> returned NO PREROLL
+0:00:00.077843138  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2727:gst_bin_change_state_func:<pipeline0> child 'videotestsrc0' changed state to 3(PAUSED) successfully without preroll
+0:00:00.077858782  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2743:gst_bin_change_state_func:<pipeline0> iterator done
+0:00:00.077871702  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2756:gst_bin_change_state_func:<pipeline0> we have NO_PREROLL elements SUCCESS -> NO_PREROLL
+0:00:00.077886648  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2812:gst_bin_change_state_func:<pipeline0> done changing bin's state from READY to PAUSED, now in READY, ret NO PREROLL
+0:00:00.077900755  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2645:gst_element_change_state:<pipeline0> element changed state NO_PREROLL
+0:00:00.077911511  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<pipeline0> completed state change to PAUSED
+0:00:00.077923383  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<pipeline0> notifying about state-changed READY to PAUSED (VOID_PENDING pending)
+0:00:00.077982048  8910       0xb40cc0 INFO              GST_STATES gstbin.c:1829:gst_bin_get_state_func:<pipeline0> getting state
+0:00:00.077994969  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<pipeline0> getting state, timeout 0:00:00.000000000
+0:00:00.078009705  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<pipeline0> RETURN is NO PREROLL
+0:00:00.078021857  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<pipeline0> state current: PAUSED, pending: VOID_PENDING, result: NO PREROLL
+0:00:00.078090229  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<capsfilter0> getting state, timeout 0:00:00.000000000
+0:00:00.078106572  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<capsfilter0> RETURN is SUCCESS
+int\)288\,\ framerate\=\(fraction\)15/1\,\ pixel-aspect-ratio\=\(fraction\)1/1\,\ interlace-mode\=\(string\)progressive"
+0:00:00.078117955  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<capsfilter0> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:00.078205045  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<vrtpsrc> getting state, timeout 0:00:00.000000000
+0:00:00.078230536  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<vrtpsrc> RETURN is NO PREROLL
+0:00:00.078242688  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<vrtpsrc> state current: PAUSED, pending: VOID_PENDING, result: NO PREROLL
+/GstPipeline:pipeline0/GstCapsFilter:capsfilter0.GstPad:src: caps = "video/x-raw\,\ format\=\(string\)I420\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ pixel-aspect-ratio\=\(fraction\)1/1\,\ interlace-mode\=\(string\)progressive"
+0:00:00.078342559  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<vrtcpsink> getting state, timeout 0:00:00.000000000
+0:00:00.078358412  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<vrtcpsink> RETURN is SUCCESS
+0:00:00.078370285  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<vrtcpsink> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:00.078487266  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<vrtpsink2> getting state, timeout 0:00:00.000000000
+0:00:00.078504236  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<vrtpsink2> RETURN is ASYNC
+0:00:00.078516458  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2048:gst_element_get_state_func:<vrtpsink2> waiting for element to commit state
+0:00:00.078593142  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2062:gst_element_get_state_func:<vrtpsink2> timed out
+0:00:00.078606341  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<vrtpsink2> state current: READY, pending: PAUSED, result: ASYNC
+0:00:00.078737709  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<vrtpsink> getting state, timeout 0:00:00.000000000
+0:00:00.078756985  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<vrtpsink> RETURN is ASYNC
+0:00:00.078769626  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2048:gst_element_get_state_func:<vrtpsink> waiting for element to commit state
+0:00:00.078845192  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2062:gst_element_get_state_func:<vrtpsink> timed out
+0:00:00.078857623  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<vrtpsink> state current: READY, pending: PAUSED, result: ASYNC
+0:00:00.078982915  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<rtph263ppay0> getting state, timeout 0:00:00.000000000
+0:00:00.079004146  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<rtph263ppay0> RETURN is SUCCESS
+0:00:00.079017206  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<rtph263ppay0> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:00.079270373  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<avenc_h263p0> getting state, timeout 0:00:00.000000000
+0:00:00.079292722  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<avenc_h263p0> RETURN is SUCCESS
+0:00:00.079307179  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<avenc_h263p0> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:00.079665803  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<videotestsrc0> getting state, timeout 0:00:00.000000000
+0:00:00.079697371  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<videotestsrc0> RETURN is NO PREROLL
+0:00:00.079729985  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<videotestsrc0> state current: PAUSED, pending: VOID_PENDING, result: NO PREROLL
+0:00:00.079859607  8910       0xb40cc0 INFO              GST_STATES gstbin.c:1829:gst_bin_get_state_func:<rtpbin> getting state
+0:00:00.079874343  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<rtpbin> getting state, timeout 0:00:00.000000000
+0:00:00.079889987  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<rtpbin> RETURN is SUCCESS
+0:00:00.079902628  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<rtpbin> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:00.080043145  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<rtpssrcdemux0> getting state, timeout 0:00:00.000000000
+0:00:00.080060395  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<rtpssrcdemux0> RETURN is SUCCESS
+0:00:00.080072477  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<rtpssrcdemux0> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:00.080126603  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<rtpsession0> getting state, timeout 0:00:00.000000000
+0:00:00.080141409  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<rtpsession0> RETURN is SUCCESS
+0:00:00.080153142  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<rtpsession0> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:00.080343104  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<mprtps> getting state, timeout 0:00:00.000000000
+0:00:00.080359866  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<mprtps> RETURN is SUCCESS
+0:00:00.080407845  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<mprtps> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:00.080597319  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<pipeline0> returned NO PREROLL
+Pipeline is live and does not need PREROLL ...
+/GstPipeline:pipeline0/avenc_h263p:avenc_h263p0.GstPad:sink: caps = "video/x-raw\,\ format\=\(string\)I420\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ pixel-aspect-ratio\=\(fraction\)1/1\,\ interlace-mode\=\(string\)progressive"
+/GstPipeline:pipeline0/GstCapsFilter:capsfilter0.GstPad:sink: caps = "video/x-raw\,\ format\=\(string\)I420\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ pixel-aspect-ratio\=\(fraction\)1/1\,\ interlace-mode\=\(string\)progressive"
+Setting pipeline to PLAYING ...
+0:00:00.081321343  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<pipeline0> set_state to PLAYING
+0:00:00.081336917  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<pipeline0> setting target state to PLAYING
+0:00:00.081348790  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<pipeline0> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return NO PREROLL
+0:00:00.081363666  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<pipeline0> final: setting state from PAUSED to PLAYING
+0:00:00.081415626  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2573:gst_bin_change_state_func:<pipeline0> changing state of children from PAUSED to PLAYING
+0:00:00.081446984  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child capsfilter0 is not sink
+0:00:00.081463326  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child vrtpsrc is not sink
+0:00:00.081487141  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child vrtcpsink is sink
+0:00:00.081522201  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child vrtpsink2 is sink
+0:00:00.081540080  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child vrtpsink is sink
+0:00:00.081556841  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child rtph263ppay0 is not sink
+0:00:00.081571018  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child avenc_h263p0 is not sink
+0:00:00.081584916  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child videotestsrc0 is not sink
+0:00:00.081598745  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child rtpbin is not sink
+0:00:00.081612643  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child mprtps is not sink
+0:00:00.081636178  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child capsfilter0 is not sink
+0:00:00.081650984  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child vrtpsrc is not sink
+0:00:00.081664952  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child vrtcpsink is sink
+0:00:00.081688348  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child vrtpsink2 is sink
+0:00:00.081712303  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child vrtpsink is sink
+0:00:00.081729623  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child rtph263ppay0 is not sink
+0:00:00.081744360  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child avenc_h263p0 is not sink
+0:00:00.081758188  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child videotestsrc0 is not sink
+0:00:00.081772714  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child rtpbin is not sink
+0:00:00.081787031  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child mprtps is not sink
+0:00:00.081827608  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtcpsink> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.081843741  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtcpsink> set_state to PLAYING
+0:00:00.081855823  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtcpsink> setting target state to PLAYING
+0:00:00.081867626  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtcpsink> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.081881524  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtcpsink> final: setting state from PAUSED to PLAYING
+0:00:00.081896330  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<vrtcpsink> element changed state SUCCESS
+0:00:00.081907434  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtcpsink> completed state change to PLAYING
+0:00:00.081919586  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtcpsink> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.081939560  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtcpsink> returned SUCCESS
+0:00:00.081959045  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtcpsink' changed state to 4(PLAYING) successfully
+0:00:00.081977413  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink2> current READY pending PAUSED, desired next PLAYING
+0:00:00.081991660  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2690:gst_bin_change_state_func:<pipeline0> child 'vrtpsink2' is changing state asynchronously to PLAYING
+0:00:00.082008142  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink> current READY pending PAUSED, desired next PLAYING
+0:00:00.082022040  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2690:gst_bin_change_state_func:<pipeline0> child 'vrtpsink' is changing state asynchronously to PLAYING
+0:00:00.082038243  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<mprtps> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.082052560  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<mprtps> set_state to PLAYING
+0:00:00.082064503  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<mprtps> setting target state to PLAYING
+0:00:00.082075956  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<mprtps> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.082089575  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<mprtps> final: setting state from PAUSED to PLAYING
+0:00:00.082103962  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<mprtps> element changed state SUCCESS
+0:00:00.082114647  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<mprtps> completed state change to PLAYING
+0:00:00.082126241  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<mprtps> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.082143700  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<mprtps> returned SUCCESS
+0:00:00.082155713  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'mprtps' changed state to 4(PLAYING) successfully
+0:00:00.082173941  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpbin> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.082188258  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpbin> set_state to PLAYING
+0:00:00.082200061  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtpbin> setting target state to PLAYING
+0:00:00.082211654  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpbin> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.082225203  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpbin> final: setting state from PAUSED to PLAYING
+0:00:00.082239450  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2573:gst_bin_change_state_func:<rtpbin> changing state of children from PAUSED to PLAYING
+0:00:00.082261240  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpssrcdemux0> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.082275906  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpssrcdemux0> set_state to PLAYING
+0:00:00.082287709  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtpssrcdemux0> setting target state to PLAYING
+0:00:00.082299372  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpssrcdemux0> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.082320743  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpssrcdemux0> final: setting state from PAUSED to PLAYING
+0:00:00.082335060  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpssrcdemux0> element changed state SUCCESS
+0:00:00.082345676  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpssrcdemux0> completed state change to PLAYING
+0:00:00.082357339  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpssrcdemux0> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.082375637  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpssrcdemux0> returned SUCCESS
+0:00:00.082387649  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpssrcdemux0' changed state to 4(PLAYING) successfully
+0:00:00.082405039  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpsession0> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.082419147  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpsession0> set_state to PLAYING
+0:00:00.082430949  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtpsession0> setting target state to PLAYING
+0:00:00.082442333  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpsession0> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.082456092  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpsession0> final: setting state from PAUSED to PLAYING
+0:00:00.082506865  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpsession0> element changed state SUCCESS
+0:00:00.082519087  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpsession0> completed state change to PLAYING
+0:00:00.082531239  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpsession0> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.082551143  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpsession0> returned SUCCESS
+0:00:00.082563365  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpsession0' changed state to 4(PLAYING) successfully
+0:00:00.082578520  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2743:gst_bin_change_state_func:<rtpbin> iterator done
+0:00:00.082591370  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2812:gst_bin_change_state_func:<rtpbin> done changing bin's state from PAUSED to PLAYING, now in PAUSED, ret SUCCESS
+0:00:00.082605617  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpbin> element changed state SUCCESS
+0:00:00.082615954  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpbin> completed state change to PLAYING
+0:00:00.082627896  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpbin> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.082645635  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<rtpbin> child rtpssrcdemux0 is not sink
+0:00:00.082658416  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<rtpbin> child rtpsession0 is not sink
+0:00:00.082671197  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpbin> returned SUCCESS
+0:00:00.082694174  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtpbin' changed state to 4(PLAYING) successfully
+0:00:00.082712192  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtph263ppay0> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.082726579  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtph263ppay0> set_state to PLAYING
+0:00:00.082738452  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtph263ppay0> setting target state to PLAYING
+0:00:00.082750045  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtph263ppay0> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.082763873  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtph263ppay0> final: setting state from PAUSED to PLAYING
+0:00:00.082778330  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtph263ppay0> element changed state SUCCESS
+0:00:00.082788876  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtph263ppay0> completed state change to PLAYING
+0:00:00.082800469  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtph263ppay0> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.082817510  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtph263ppay0> returned SUCCESS
+0:00:00.082829662  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtph263ppay0' changed state to 4(PLAYING) successfully
+0:00:00.082845166  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtpsrc> set_state to PLAYING
+0:00:00.082857039  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtpsrc> setting target state to PLAYING
+0:00:00.082868492  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtpsrc> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return NO PREROLL
+0:00:00.082882041  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtpsrc> final: setting state from PAUSED to PLAYING
+0:00:00.082906485  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<vrtpsrc> element changed state SUCCESS
+0:00:00.082917310  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsrc> completed state change to PLAYING
+0:00:00.082932256  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsrc> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.082950135  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtpsrc> returned SUCCESS
+0:00:00.082963125  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsrc' changed state to 4(PLAYING) successfully
+0:00:00.082980864  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<avenc_h263p0> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.082995041  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<avenc_h263p0> set_state to PLAYING
+0:00:00.083006774  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<avenc_h263p0> setting target state to PLAYING
+0:00:00.083018228  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<avenc_h263p0> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.083040157  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<avenc_h263p0> final: setting state from PAUSED to PLAYING
+0:00:00.083054824  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<avenc_h263p0> element changed state SUCCESS
+0:00:00.083065579  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<avenc_h263p0> completed state change to PLAYING
+0:00:00.083077591  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<avenc_h263p0> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.083094772  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<avenc_h263p0> returned SUCCESS
+0:00:00.083106714  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'avenc_h263p0' changed state to 4(PLAYING) successfully
+0:00:00.083124314  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<capsfilter0> current PAUSED pending VOID_PENDING, desired next PLAYING
+0:00:00.083138631  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<capsfilter0> set_state to PLAYING
+0:00:00.083150224  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<capsfilter0> setting target state to PLAYING
+0:00:00.083161538  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<capsfilter0> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:00.083174947  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<capsfilter0> final: setting state from PAUSED to PLAYING
+0:00:00.083188007  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<capsfilter0> element changed state SUCCESS
+0:00:00.083198413  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<capsfilter0> completed state change to PLAYING
+0:00:00.083210216  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<capsfilter0> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.083227187  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<capsfilter0> returned SUCCESS
+0:00:00.083239129  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'capsfilter0' changed state to 4(PLAYING) successfully
+0:00:00.083254773  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<videotestsrc0> set_state to PLAYING
+0:00:00.083266716  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<videotestsrc0> setting target state to PLAYING
+0:00:00.083278309  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<videotestsrc0> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return NO PREROLL
+0:00:00.083291998  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<videotestsrc0> final: setting state from PAUSED to PLAYING
+0:00:00.083310575  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<videotestsrc0> element changed state SUCCESS
+0:00:00.083322308  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<videotestsrc0> completed state change to PLAYING
+0:00:00.083336555  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<videotestsrc0> notifying about state-changed PAUSED to PLAYING (VOID_PENDING pending)
+0:00:00.083354853  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<videotestsrc0> returned SUCCESS
+0:00:00.083374478  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'videotestsrc0' changed state to 4(PLAYING) successfully
+0:00:00.083390820  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2743:gst_bin_change_state_func:<pipeline0> iterator done
+0:00:00.083401785  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2761:gst_bin_change_state_func:<pipeline0> we have ASYNC elements SUCCESS -> ASYNC
+0:00:00.083416451  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2812:gst_bin_change_state_func:<pipeline0> done changing bin's state from PAUSED to PLAYING, now in PAUSED, ret ASYNC
+0:00:00.083430908  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2620:gst_element_change_state:<pipeline0> element will change state ASYNC
+0:00:00.083441105  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<pipeline0> returned ASYNC
+New clock: GstSystemClock
+----10254----gst_mprtp_sender_forward_event
+Pushing event to srcpad 1
+0:00:00.087099351  8910       0xaed6d0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child capsfilter0 is not sink
+0:00:00.087128544  8910       0xaed6d0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child vrtpsrc is not sink
+0:00:00.087142162  8910       0xaed6d0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child vrtcpsink is sink
+Pushing event to srcpad 2
+0:00:00.087169818  8910       0xaed6d0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child capsfilter0 is not sink
+0:00:00.087183297  8910       0xaed6d0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child vrtpsrc is not sink
+0:00:00.087195868  8910       0xaed6d0 DEBUG             GST_STATES gstbin.c:1711:bin_element_is_sink:<pipeline0> child vrtcpsink is sink
+1
+/GstPipeline:pipeline0/avenc_h263p:avenc_h263p0.GstPad:src: caps = "video/x-h263\,\ variant\=\(string\)itu\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ h263version\=\(string\)h263p\,\ annex-f\=\(boolean\)true\,\ annex-j\=\(boolean\)true\,\ annex-i\=\(boolean\)true\,\ annex-t\=\(boolean\)true\,\ pixel-aspect-ratio\=\(fraction\)1/1"
+/GstPipeline:pipeline0/GstRtpH263PPay:rtph263ppay0.GstPad:src: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)3283270991\,\ timestamp-offset\=\(uint\)3833982870\,\ seqnum-offset\=\(uint\)7968"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtp_sink_2.GstProxyPad:proxypad1: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)3283270991\,\ timestamp-offset\=\(uint\)3833982870\,\ seqnum-offset\=\(uint\)7968"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin/GstRtpSession:rtpsession0.GstPad:send_rtp_src: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)3283270991\,\ timestamp-offset\=\(uint\)3833982870\,\ seqnum-offset\=\(uint\)7968"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtp_src_2: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)3283270991\,\ timestamp-offset\=\(uint\)3833982870\,\ seqnum-offset\=\(uint\)7968"
+----12814----gst_mprtp_sender_forward_event
+Pushing event to srcpad 1
+/GstPipeline:pipeline0/GstMprtpSender:mprtps.GstPad:mprtp_src_1: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)3283270991\,\ timestamp-offset\=\(uint\)3833982870\,\ seqnum-offset\=\(uint\)7968"
+/GstPipeline:pipeline0/GstUDPSink:vrtpsink.GstPad:sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)3283270991\,\ timestamp-offset\=\(uint\)3833982870\,\ seqnum-offset\=\(uint\)7968"
+Pushing event to srcpad 2
+/GstPipeline:pipeline0/GstMprtpSender:mprtps.GstPad:mprtp_src_2: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)3283270991\,\ timestamp-offset\=\(uint\)3833982870\,\ seqnum-offset\=\(uint\)7968"
+/GstPipeline:pipeline0/GstUDPSink:vrtpsink2.GstPad:sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)3283270991\,\ timestamp-offset\=\(uint\)3833982870\,\ seqnum-offset\=\(uint\)7968"
+1
+/GstPipeline:pipeline0/GstMprtpSender:mprtps.GstPad:mprtp_sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)3283270991\,\ timestamp-offset\=\(uint\)3833982870\,\ seqnum-offset\=\(uint\)7968"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtp_src_2.GstProxyPad:proxypad0: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)3283270991\,\ timestamp-offset\=\(uint\)3833982870\,\ seqnum-offset\=\(uint\)7968"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin/GstRtpSession:rtpsession0.GstPad:send_rtp_sink: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)3283270991\,\ timestamp-offset\=\(uint\)3833982870\,\ seqnum-offset\=\(uint\)7968"
+/GstPipeline:pipeline0/GstRtpBin:rtpbin.GstGhostPad:send_rtp_sink_2: caps = "application/x-rtp\,\ media\=\(string\)video\,\ clock-rate\=\(int\)90000\,\ encoding-name\=\(string\)H263-1998\,\ payload\=\(int\)96\,\ ssrc\=\(uint\)3283270991\,\ timestamp-offset\=\(uint\)3833982870\,\ seqnum-offset\=\(uint\)7968"
+/GstPipeline:pipeline0/GstRtpH263PPay:rtph263ppay0.GstPad:sink: caps = "video/x-h263\,\ variant\=\(string\)itu\,\ width\=\(int\)352\,\ height\=\(int\)288\,\ framerate\=\(fraction\)15/1\,\ h263version\=\(string\)h263p\,\ annex-f\=\(boolean\)true\,\ annex-j\=\(boolean\)true\,\ annex-i\=\(boolean\)true\,\ annex-t\=\(boolean\)true\,\ pixel-aspect-ratio\=\(fraction\)1/1"
+/GstPipeline:pipeline0/GstRtpH263PPay:rtph263ppay0: timestamp = 3833983160
+/GstPipeline:pipeline0/GstRtpH263PPay:rtph263ppay0: seqnum = 7968
+----17934----gst_mprtp_sender_forward_event
+Pushing event to srcpad 1
+Pushing event to srcpad 2
+1
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                           7968|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140436379660472|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140435828948303|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x1     =     1|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+handling interrupt.
+Interrupt: Stopping pipeline ...
+Execution ended after 0:00:01.516190746
+Setting pipeline to PAUSED ...
+0:00:01.599685208  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<pipeline0> set_state to PAUSED
+0:00:01.599715798  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<pipeline0> setting target state to PAUSED
+0:00:01.599758400  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<pipeline0> current PAUSED, old_pending PLAYING, next PLAYING, old return ASYNC
+0:00:01.599785916  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<pipeline0> final: setting state from PLAYING to PAUSED
+0:00:01.599816297  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2573:gst_bin_change_state_func:<pipeline0> changing state of children from PLAYING to PAUSED
+0:00:01.599892072  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtcpsink> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:01.599919100  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtcpsink> set_state to PAUSED
+0:00:01.599940611  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtcpsink> setting target state to PAUSED
+0:00:01.599960794  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtcpsink> current PLAYING, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.599984889  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtcpsink> final: setting state from PLAYING to PAUSED
+0:00:01.600020158  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<vrtcpsink> element changed state SUCCESS
+0:00:01.600039992  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtcpsink> completed state change to PAUSED
+0:00:01.600060176  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtcpsink> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:01.600098797  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtcpsink> returned SUCCESS
+0:00:01.600121914  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtcpsink' changed state to 3(PAUSED) successfully
+0:00:01.600152364  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink2> current READY pending PAUSED, desired next PAUSED
+0:00:01.600175970  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2347:gst_bin_element_set_state:<vrtpsink2> skipping transition from READY to  PAUSED
+0:00:01.600197550  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsink2' changed state to 3(PAUSED) successfully
+0:00:01.600227372  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink> current PAUSED pending VOID_PENDING, desired next PAUSED
+0:00:01.600250488  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2347:gst_bin_element_set_state:<vrtpsink> skipping transition from PAUSED to  PAUSED
+0:00:01.600270951  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsink' changed state to 3(PAUSED) successfully
+0:00:01.600299586  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<mprtps> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:01.600323610  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<mprtps> set_state to PAUSED
+0:00:01.600343724  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<mprtps> setting target state to PAUSED
+0:00:01.600363139  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<mprtps> current PLAYING, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.600418731  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<mprtps> final: setting state from PLAYING to PAUSED
+0:00:01.600456864  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<mprtps> element changed state SUCCESS
+0:00:01.600476069  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<mprtps> completed state change to PAUSED
+0:00:01.600496043  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<mprtps> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:01.600526563  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<mprtps> returned SUCCESS
+0:00:01.600546886  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'mprtps' changed state to 3(PAUSED) successfully
+0:00:01.600579082  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpbin> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:01.600603945  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpbin> set_state to PAUSED
+0:00:01.600624198  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtpbin> setting target state to PAUSED
+0:00:01.600643893  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpbin> current PLAYING, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.600667429  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpbin> final: setting state from PLAYING to PAUSED
+0:00:01.600691454  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2573:gst_bin_change_state_func:<rtpbin> changing state of children from PLAYING to PAUSED
+0:00:01.600730982  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpssrcdemux0> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:01.600755426  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpssrcdemux0> set_state to PAUSED
+0:00:01.600775610  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtpssrcdemux0> setting target state to PAUSED
+0:00:01.600795165  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpssrcdemux0> current PLAYING, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.600818770  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpssrcdemux0> final: setting state from PLAYING to PAUSED
+0:00:01.600842516  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpssrcdemux0> element changed state SUCCESS
+0:00:01.600860744  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpssrcdemux0> completed state change to PAUSED
+0:00:01.600880648  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpssrcdemux0> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:01.600912914  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpssrcdemux0> returned SUCCESS
+0:00:01.600933376  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpssrcdemux0' changed state to 3(PAUSED) successfully
+0:00:01.600963477  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtpsession0> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:01.600988200  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtpsession0> set_state to PAUSED
+0:00:01.601008523  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtpsession0> setting target state to PAUSED
+0:00:01.601039742  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtpsession0> current PLAYING, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.601064325  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtpsession0> final: setting state from PLAYING to PAUSED
+0:00:01.601101968  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpsession0> element changed state SUCCESS
+0:00:01.601121384  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpsession0> completed state change to PAUSED
+0:00:01.601141916  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpsession0> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:01.601173065  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpsession0> returned SUCCESS
+0:00:01.601194156  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<rtpbin> child 'rtpsession0' changed state to 3(PAUSED) successfully
+0:00:01.601219717  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2743:gst_bin_change_state_func:<rtpbin> iterator done
+0:00:01.601242415  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2812:gst_bin_change_state_func:<rtpbin> done changing bin's state from PLAYING to PAUSED, now in PLAYING, ret SUCCESS
+0:00:01.601267138  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtpbin> element changed state SUCCESS
+0:00:01.601285226  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtpbin> completed state change to PAUSED
+0:00:01.601305200  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtpbin> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:01.601335790  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtpbin> returned SUCCESS
+0:00:01.601356393  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtpbin' changed state to 3(PAUSED) successfully
+0:00:01.601387052  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<rtph263ppay0> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:01.601411915  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<rtph263ppay0> set_state to PAUSED
+0:00:01.601441806  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<rtph263ppay0> setting target state to PAUSED
+0:00:01.601463177  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<rtph263ppay0> current PLAYING, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.601487062  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<rtph263ppay0> final: setting state from PLAYING to PAUSED
+0:00:01.601511645  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<rtph263ppay0> element changed state SUCCESS
+0:00:01.601529873  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<rtph263ppay0> completed state change to PAUSED
+0:00:01.601549777  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<rtph263ppay0> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:01.601579389  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<rtph263ppay0> returned SUCCESS
+0:00:01.601600061  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'rtph263ppay0' changed state to 3(PAUSED) successfully
+0:00:01.601638403  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsrc> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:01.601663196  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtpsrc> set_state to PAUSED
+0:00:01.601683240  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtpsrc> setting target state to PAUSED
+0:00:01.601703004  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtpsrc> current PLAYING, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.601726680  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtpsrc> final: setting state from PLAYING to PAUSED
+0:00:01.601845407  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2645:gst_element_change_state:<vrtpsrc> element changed state NO_PREROLL
+0:00:01.603179056  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsrc> completed state change to PAUSED
+0:00:01.603207969  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsrc> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:01.603243378  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtpsrc> returned NO PREROLL
+0:00:01.603265098  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2727:gst_bin_change_state_func:<pipeline0> child 'vrtpsrc' changed state to 3(PAUSED) successfully without preroll
+0:00:01.603300017  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<avenc_h263p0> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:01.603325439  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<avenc_h263p0> set_state to PAUSED
+0:00:01.603345902  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<avenc_h263p0> setting target state to PAUSED
+0:00:01.603366085  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<avenc_h263p0> current PLAYING, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.603390948  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<avenc_h263p0> final: setting state from PLAYING to PAUSED
+0:00:01.603415811  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<avenc_h263p0> element changed state SUCCESS
+0:00:01.603434597  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<avenc_h263p0> completed state change to PAUSED
+0:00:01.603454641  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<avenc_h263p0> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:01.603484602  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<avenc_h263p0> returned SUCCESS
+0:00:01.603505484  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'avenc_h263p0' changed state to 3(PAUSED) successfully
+0:00:01.603535864  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<capsfilter0> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:01.603560518  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<capsfilter0> set_state to PAUSED
+0:00:01.603580422  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<capsfilter0> setting target state to PAUSED
+0:00:01.603599977  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<capsfilter0> current PLAYING, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.603639296  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<capsfilter0> final: setting state from PLAYING to PAUSED
+0:00:01.603662622  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<capsfilter0> element changed state SUCCESS
+0:00:01.603681200  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<capsfilter0> completed state change to PAUSED
+0:00:01.603700964  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<capsfilter0> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:01.603730925  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<capsfilter0> returned SUCCESS
+0:00:01.603751318  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'capsfilter0' changed state to 3(PAUSED) successfully
+0:00:01.603778625  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<videotestsrc0> current PLAYING pending VOID_PENDING, desired next PAUSED
+0:00:01.603803698  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<videotestsrc0> set_state to PAUSED
+0:00:01.603824161  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<videotestsrc0> setting target state to PAUSED
+0:00:01.603844344  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<videotestsrc0> current PLAYING, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.603868439  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<videotestsrc0> final: setting state from PLAYING to PAUSED
+0:00:01.603892882  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2645:gst_element_change_state:<videotestsrc0> element changed state NO_PREROLL
+0:00:01.603911529  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<videotestsrc0> completed state change to PAUSED
+0:00:01.603931434  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<videotestsrc0> notifying about state-changed PLAYING to PAUSED (VOID_PENDING pending)
+0:00:01.603961115  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<videotestsrc0> returned NO PREROLL
+0:00:01.603981648  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2727:gst_bin_change_state_func:<pipeline0> child 'videotestsrc0' changed state to 3(PAUSED) successfully without preroll
+0:00:01.604007279  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2743:gst_bin_change_state_func:<pipeline0> iterator done
+0:00:01.604025297  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2756:gst_bin_change_state_func:<pipeline0> we have NO_PREROLL elements SUCCESS -> NO_PREROLL
+0:00:01.604050509  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2812:gst_bin_change_state_func:<pipeline0> done changing bin's state from PLAYING to PAUSED, now in PAUSED, ret NO PREROLL
+0:00:01.604079004  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2645:gst_element_change_state:<pipeline0> element changed state NO_PREROLL
+0:00:01.604097022  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<pipeline0> completed state change to PAUSED
+0:00:01.604116996  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<pipeline0> notifying about state-changed PAUSED to PAUSED (VOID_PENDING pending)
+0:00:01.604215190  8910       0xb40cc0 INFO              GST_STATES gstbin.c:1829:gst_bin_get_state_func:<pipeline0> getting state
+0:00:01.604235863  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<pipeline0> getting state, timeout 0:00:00.000000000
+0:00:01.604273017  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<pipeline0> RETURN is NO PREROLL
+0:00:01.604293340  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<pipeline0> state current: PAUSED, pending: VOID_PENDING, result: NO PREROLL
+0:00:01.604446707  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<capsfilter0> getting state, timeout 0:00:00.000000000
+0:00:01.604475202  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<capsfilter0> RETURN is SUCCESS
+0:00:01.604495385  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<capsfilter0> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:01.604672917  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<vrtpsrc> getting state, timeout 0:00:00.000000000
+0:00:01.604699386  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<vrtpsrc> RETURN is NO PREROLL
+0:00:01.604719360  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<vrtpsrc> state current: PAUSED, pending: VOID_PENDING, result: NO PREROLL
+0:00:01.604892422  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<vrtcpsink> getting state, timeout 0:00:00.000000000
+0:00:01.604918751  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<vrtcpsink> RETURN is SUCCESS
+0:00:01.604938795  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<vrtcpsink> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:01.605136510  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<vrtpsink2> getting state, timeout 0:00:00.000000000
+0:00:01.605162421  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<vrtpsink2> RETURN is ASYNC
+0:00:01.605181836  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2048:gst_element_get_state_func:<vrtpsink2> waiting for element to commit state
+0:00:01.605269903  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2062:gst_element_get_state_func:<vrtpsink2> timed out
+0:00:01.605289249  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<vrtpsink2> state current: READY, pending: PAUSED, result: ASYNC
+0:00:01.605476977  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<vrtpsink> getting state, timeout 0:00:00.000000000
+0:00:01.605502957  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<vrtpsink> RETURN is SUCCESS
+0:00:01.605522931  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<vrtpsink> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:01.605729167  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<rtph263ppay0> getting state, timeout 0:00:00.000000000
+0:00:01.605755706  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<rtph263ppay0> RETURN is SUCCESS
+0:00:01.605775610  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<rtph263ppay0> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:01.605993299  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<avenc_h263p0> getting state, timeout 0:00:00.000000000
+0:00:01.606019978  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<avenc_h263p0> RETURN is SUCCESS
+0:00:01.606040091  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<avenc_h263p0> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:01.606320287  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<videotestsrc0> getting state, timeout 0:00:00.000000000
+0:00:01.606346826  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<videotestsrc0> RETURN is NO PREROLL
+0:00:01.606366870  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<videotestsrc0> state current: PAUSED, pending: VOID_PENDING, result: NO PREROLL
+0:00:01.606537557  8910       0xb40cc0 INFO              GST_STATES gstbin.c:1829:gst_bin_get_state_func:<rtpbin> getting state
+0:00:01.606557880  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<rtpbin> getting state, timeout 0:00:00.000000000
+0:00:01.606582254  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<rtpbin> RETURN is SUCCESS
+0:00:01.606601739  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<rtpbin> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:01.606820057  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<rtpssrcdemux0> getting state, timeout 0:00:00.000000000
+0:00:01.606845967  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<rtpssrcdemux0> RETURN is SUCCESS
+0:00:01.606865941  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<rtpssrcdemux0> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:01.606967138  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<rtpsession0> getting state, timeout 0:00:00.000000000
+0:00:01.606991862  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<rtpsession0> RETURN is SUCCESS
+0:00:01.607011486  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<rtpsession0> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:01.607419697  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2020:gst_element_get_state_func:<mprtps> getting state, timeout 0:00:00.000000000
+0:00:01.607447423  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2025:gst_element_get_state_func:<mprtps> RETURN is SUCCESS
+0:00:01.607467817  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2095:gst_element_get_state_func:<mprtps> state current: PAUSED, pending: VOID_PENDING, result: SUCCESS
+0:00:01.607762050  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<pipeline0> returned NO PREROLL
+Setting pipeline to READY ...
+0:00:01.607826302  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<pipeline0> set_state to READY
+0:00:01.607847393  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<pipeline0> setting target state to READY
+0:00:01.607867018  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<pipeline0> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return NO PREROLL
+0:00:01.607890694  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<pipeline0> final: setting state from PAUSED to READY
+0:00:01.607914718  8910       0xb40cc0 DEBUG             GST_STATES gstbin.c:2573:gst_bin_change_state_func:<pipeline0> changing state of children from PAUSED to READY
+0:00:01.607977434  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtcpsink> current PAUSED pending VOID_PENDING, desired next READY
+0:00:01.608003275  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtcpsink> set_state to READY
+0:00:01.608023249  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtcpsink> setting target state to READY
+0:00:01.608053838  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtcpsink> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.608078073  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtcpsink> final: setting state from PAUSED to READY
+0:00:01.608116554  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<vrtcpsink> element changed state SUCCESS
+0:00:01.608136388  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtcpsink> completed state change to READY
+0:00:01.608157200  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtcpsink> notifying about state-changed PAUSED to READY (VOID_PENDING pending)
+0:00:01.608189466  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtcpsink> returned SUCCESS
+0:00:01.608209789  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtcpsink' changed state to 2(READY) successfully
+0:00:01.608239401  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink2> current READY pending PAUSED, desired next READY
+0:00:01.608263356  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtpsink2> set_state to READY
+0:00:01.608283260  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtpsink2> setting target state to READY
+0:00:01.608303025  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtpsink2> current READY, old_pending PAUSED, next PAUSED, old return ASYNC
+0:00:01.608326491  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtpsink2> final: setting state from PAUSED to READY
+0:00:01.608400451  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<vrtpsink2> element changed state SUCCESS
+0:00:01.608422101  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsink2> completed state change to READY
+0:00:01.608445567  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsink2> notifying about state-changed READY to READY (VOID_PENDING pending)
+0:00:01.608500181  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtpsink2> returned SUCCESS
+0:00:01.608520574  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsink2' changed state to 2(READY) successfully
+0:00:01.608551513  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<vrtpsink> current PAUSED pending VOID_PENDING, desired next READY
+0:00:01.608575887  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2481:gst_element_set_state_func:<vrtpsink> set_state to READY
+0:00:01.608593696  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<vrtpsink> setting target state to READY
+0:00:01.608605359  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<vrtpsink> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.608619257  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<vrtpsink> final: setting state from PAUSED to READY
+0:00:01.608711096  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2638:gst_element_change_state:<vrtpsink> element changed state SUCCESS
+0:00:01.608724505  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2330:gst_element_continue_state:<vrtpsink> completed state change to READY
+0:00:01.608737146  8910       0xb40cc0 INFO              GST_STATES gstelement.c:2235:_priv_gst_element_state_changed:<vrtpsink> notifying about state-changed PAUSED to READY (VOID_PENDING pending)
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+0:00:01.608765151  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2565:gst_element_set_state_func:<vrtpsink> returned SUCCESS
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+0:00:01.608778490  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2684:gst_bin_change_state_func:<pipeline0> child 'vrtpsink' changed state to 2(READY) successfully
+0:00:01.608797207  8910       0xb40cc0 INFO              GST_STATES gstbin.c:2230:gst_bin_element_set_state:<mprtps> current PAUSED pending VOID_PENDING, desired next READY
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                           7970|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140436379660472|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140435828948303|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x3     =     3|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                           7971|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140436379660472|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140435828948303|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x4     =     4|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                           7972|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140436379660472|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140435828948303|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x5     =     5|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                           7973|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140436379660472|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140435828948303|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x6     =     6|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|0|           96|                           7974|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140436379660472|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140435828948303|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x7     =     7|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+0:00:01.609097376  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2506:gst_element_set_state_func:<mprtps> setting target state to READY
+0:00:01.609111065  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2519:gst_element_set_state_func:<mprtps> current PAUSED, old_pending VOID_PENDING, next VOID_PENDING, old return SUCCESS
+0:00:01.609128524  8910       0xb40cc0 DEBUG             GST_STATES gstelement.c:2553:gst_element_set_state_func:<mprtps> final: setting state from PAUSED to READY
+-----------SEG EVENT------------------
+(gst-launch-1.0:8910): GLib-GObject-WARNING **: invalid cast from 'GstPad' to 'GstMprtpSender'
+
+(gst-launch-1.0:8910): GLib-GObject-WARNING **: invalid cast from 'GstPad' to 'GstMprtpSender'
+
+(gst-launch-1.0:8910): GLib-GObject-WARNING **: invalid cast from 'GstPad' to 'GstMprtpSender'
+0               1               2               3          
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  2|0|1|      0|1|           96|                           7975|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140436379660472|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                140435828948303|
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|0xBEDE                         |                              2|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x33    =    51|0x1     =     1|0x0     =     0|0x8     =     8|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|0x0     =     0|0x0     =     0|0x0     =     0|0x0     =     0|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+Caught SIGSEGV
+Spinning.  Please run 'gdb gst-launch-1.0 8910' to continue debugging, Ctrl-C to quit, or Ctrl-\ to dump core.

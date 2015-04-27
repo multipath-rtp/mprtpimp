@@ -38,18 +38,17 @@ VENC="avenc_h263p ! rtph263ppay"
 VRTPSINK1="udpsink port=5000 host=$DEST ts-offset=$VOFFSET name=vrtpsink"
 # VRTPSINK1="fakesink"
 # VRTPSINK2="queue ! fakesink"
-VRTPSINK2="udpsink port=5010 host=$DEST2 ts-offset=$VOFFSET name=vrtpsink2"
+VRTPSINK2="udpsink port=5010 host=$DEST2 ts-offset=$VOFFSET sync=false async=false name=vrtpsink2"
 VRTCPSINK="udpsink port=5001 host=$DEST sync=false async=false name=vrtcpsink"
 VRTCPSRC="udpsrc port=5005 name=vrtpsrc"
 
-PIPELINE="mprtpsender name=mprtps rtpbin name=rtpbin 
+PIPELINE="rtpbin name=rtpbin 
             $VSOURCE ! $VENC ! rtpbin.send_rtp_sink_2
-	      rtpbin.send_rtp_src_2 ! mprtps.mprtp_sink mprtps.mprtp_src_1 !  $VRTPSINK1 
-              mprtps.mprtp_src_2 !  $VRTPSINK2
+	      rtpbin.send_rtp_src_2 !  $VRTPSINK1 
               rtpbin.send_rtcp_src_2 ! $VRTCPSINK
             $VRTCPSRC ! rtpbin.recv_rtcp_sink_2"
 
 echo $PIPELINE 
 
-gst-launch-1.0 -v --gst-debug-level=4  --gst-debug-no-color=1 $PIPELINE
+gst-launch-1.0 -v --gst-debug=GST_STATES:5 --gst-debug-no-color=1 --gst-debug-no-color=1 $PIPELINE
 #gst-launch-1.0 -v $PIPELINE

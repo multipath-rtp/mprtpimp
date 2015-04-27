@@ -45,8 +45,12 @@ struct _GstMprtpSender {
   GstElement element;
 
   GstPad *sinkpad;
+  GstPad *mprtcp_sinkpad;
+  GstPad *rtcp_sinkpad;
+  GstPad *mprtcp_srcpad;
   GSList *subflows;
   MPRTPSenderSubflow *selected_subflow;
+  GstBuffer *latest_buffer;
   GstSegment segment;
 
   //Necessary for packet scheduling
@@ -54,9 +58,6 @@ struct _GstMprtpSender {
   SchNode *mctree;
   SchNode *nctree;
 
-  //These values are intended to use in different methods and the
-  //purpuse of declared here is to reserve the memory only once.
-  GstRTPBuffer RTPBuffer;
 
 };
 
@@ -73,6 +74,7 @@ struct _MPRTPSenderSubflow{
     GstPad* srcpad;
     guint32 bw;
     MPRTP_Congestion congestion;
+    gboolean initiated;
 };
 
 G_GNUC_INTERNAL GType gst_mprtp_sender_get_type (void);

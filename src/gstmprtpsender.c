@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <gst/rtp/gstrtpbuffer.h>
+#include <gst/rtp/gstrtcpbuffer.h>
 #include "gstmprtpsender.h"
 #include "mprtplibs.h"
 
@@ -41,6 +42,10 @@
 G_DEFINE_TYPE_WITH_CODE (GstMprtpSender, gst_mprtp_sender,
     GST_TYPE_ELEMENT, GST_DEBUG_CATEGORY_INIT (gst_mprtp_sender_debug, \
             "mprtpsender", 0, "MpRtp Sender"););
+
+#define GST_MPRTCP_BUFFER_FOR_PACKETS(b,buffer,packet) \
+  for ((b) = gst_rtcp_buffer_get_first_packet ((buffer), (packet)); (b); \
+          (b) = gst_rtcp_packet_move_to_next ((packet)))
 
 
 static GstStaticPadTemplate gst_mprtp_sender_sink_factory =
@@ -55,10 +60,25 @@ GST_STATIC_PAD_TEMPLATE ("mprtp_src_%u",
     GST_PAD_REQUEST,
     GST_MPRTP_PAD_CAPS);
 
-static GstStaticPadTemplate gst_mprtcp_sender_src_factory =
+
+static GstStaticPadTemplate gst_mprtp_sender_rtcp_sink_factory =
+GST_STATIC_PAD_TEMPLATE ("rtcp_sink",
+    GST_PAD_SINK,
+	GST_PAD_ALWAYS,
+    GST_MPRTCP_SR_CAPS);
+
+
+static GstStaticPadTemplate gst_mprtp_sender_mprtcp_sink_factory =
+GST_STATIC_PAD_TEMPLATE ("mprtcp_sink",
+    GST_PAD_SINK,
+	GST_PAD_ALWAYS,
+    GST_MPRTCP_SR_CAPS);
+
+
+static GstStaticPadTemplate gst_mprtp_sender_mprtcp_src_factory =
 GST_STATIC_PAD_TEMPLATE ("mprtcp_src",
     GST_PAD_SRC,
-    GST_PAD_REQUEST,
+	GST_PAD_ALWAYS,
     GST_MPRTCP_SR_CAPS);
 
 
@@ -68,6 +88,7 @@ GST_STATIC_PAD_TEMPLATE ("mprtcp_src",
 
 enum
 {
+  PROP_RTP_EXT_ID,
   PROP_0,
 };
 
@@ -98,12 +119,25 @@ static void gst_mprtp_sender_release_pad (GstElement * element,
     GstPad * pad);
 static GstFlowReturn gst_mprtp_sender_chain (GstPad * pad,
     GstObject * parent, GstBuffer * buf);
+static GstFlowReturn gst_mprtcp_sender_rtcp_chain (GstPad * pad,
+    GstObject * parent, GstBuffer * buf);
+static GstFlowReturn gst_mprtcp_sender_mprtcp_chain (GstPad * pad,
+    GstObject * parent, GstBuffer * buf);
 static GstStateChangeReturn gst_mprtp_sender_change_state (GstElement *
     element, GstStateChange transition);
 static gboolean gst_mprtp_sender_event (GstPad * pad, GstObject * parent,
     GstEvent * event);
 static gboolean gst_mprtp_sender_query (GstPad * pad, GstObject * parent,
     GstQuery * query);
+static gboolean gst_mprtcp_sender_rtcp_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static gboolean gst_mprtcp_sender_rtcp_query (GstPad * pad, GstObject * parent,
+    GstQuery * query);
+static gboolean gst_mprtcp_sender_mprtcp_event (GstPad * pad, GstObject * parent,
+    GstEvent * event);
+static gboolean gst_mprtcp_sender_mprtcp_query (GstPad * pad, GstObject * parent,
+    GstQuery * query);
+
 static MPRTPSenderSubflow* _select_subflow (GstMprtpSender * mprtps, GstRTPBuffer *rtp);
 
 static void _subflow_dtor(MPRTPSenderSubflow* target);
@@ -121,6 +155,8 @@ static void _refresh_schtree(GstMprtpSender* mprtps);
 void _recalculate_congestion(GstMprtpSender* mprtps);
 static MPRTPSenderSubflow* _switch_subflow_in_schtree (GstMprtpSender * mprtps, SchNode *category);
 static void _print_rtp_packet_info(GstRTPBuffer *rtp);
+static GstIterator *
+gst_mprtp_sender_iterate_internal_links (GstPad * pad, GstObject * parent);
 
 static void
 gst_mprtp_sender_class_init (GstMprtpSenderClass * klass)
@@ -130,18 +166,28 @@ gst_mprtp_sender_class_init (GstMprtpSenderClass * klass)
 
   gobject_class->dispose = gst_mprtp_sender_dispose;
 
+  g_object_class_install_property (gobject_class, PROP_RTP_EXT_ID,
+	g_param_spec_object ("RTP One byte header extension ID", "RTP ext. ID",
+			"The ID used on RTP packet extension for signaling", GST_TYPE_PAD,
+			G_PARAM_READWRITE | GST_PARAM_MUTABLE_PLAYING |
+			G_PARAM_STATIC_STRINGS));
+
   gobject_class->set_property = gst_mprtp_sender_set_property;
   gobject_class->get_property = gst_mprtp_sender_get_property;
 
-  gst_element_class_set_static_metadata (gstelement_class, "MpRtp sender",
-      "Generic", "Multipath Rtp protocol interpreter for sender part",
+  gst_element_class_set_static_metadata (gstelement_class, "MpRtp sender proxy element",
+      "Generic", "Multipath Rtp sender proxy element",
       "Balázs Kreith <balazs.kreith@gmail.com>");
   gst_element_class_add_pad_template (gstelement_class,
       gst_static_pad_template_get (&gst_mprtp_sender_sink_factory));
   gst_element_class_add_pad_template (gstelement_class,
         gst_static_pad_template_get (&gst_mprtp_sender_src_factory));
   gst_element_class_add_pad_template (gstelement_class,
-        gst_static_pad_template_get (&gst_mprtcp_sender_src_factory));
+	gst_static_pad_template_get (&gst_mprtp_sender_rtcp_sink_factory));
+  gst_element_class_add_pad_template (gstelement_class,
+  	gst_static_pad_template_get (&gst_mprtp_sender_mprtcp_sink_factory));
+  gst_element_class_add_pad_template (gstelement_class,
+  	gst_static_pad_template_get (&gst_mprtp_sender_mprtcp_src_factory));
 
   gstelement_class->request_new_pad =
       GST_DEBUG_FUNCPTR (gst_mprtp_sender_request_new_pad);
@@ -150,7 +196,6 @@ gst_mprtp_sender_class_init (GstMprtpSenderClass * klass)
 
   gstelement_class->change_state = gst_mprtp_sender_change_state;
 
-
 }
 
 static void
@@ -158,24 +203,54 @@ gst_mprtp_sender_init (GstMprtpSender * mprtps)
 {
 
   mprtps->sinkpad =
-      gst_pad_new_from_static_template (&gst_mprtp_sender_sink_factory,
-      "mprtp_sink");
+	  gst_pad_new_from_static_template (&gst_mprtp_sender_sink_factory,
+	  "mprtp_sink");
   gst_pad_set_chain_function (mprtps->sinkpad,
-      GST_DEBUG_FUNCPTR (gst_mprtp_sender_chain));
+	  GST_DEBUG_FUNCPTR (gst_mprtp_sender_chain));
   gst_pad_set_event_function (mprtps->sinkpad,
-      GST_DEBUG_FUNCPTR (gst_mprtp_sender_event));
+	  GST_DEBUG_FUNCPTR (gst_mprtp_sender_event));
   gst_pad_set_query_function (mprtps->sinkpad,
-      GST_DEBUG_FUNCPTR (gst_mprtp_sender_query));
+	  GST_DEBUG_FUNCPTR (gst_mprtp_sender_query));
 
   GST_OBJECT_FLAG_SET (mprtps->sinkpad, GST_PAD_FLAG_PROXY_CAPS);
   gst_element_add_pad (GST_ELEMENT (mprtps), mprtps->sinkpad);
 
+  mprtps->rtcp_sinkpad = gst_pad_new_from_static_template (
+		  &gst_mprtp_sender_rtcp_sink_factory, "rtcp_sink");
+  gst_pad_set_chain_function (mprtps->rtcp_sinkpad,
+	  GST_DEBUG_FUNCPTR (gst_mprtcp_sender_rtcp_chain));
+  gst_pad_set_event_function (mprtps->rtcp_sinkpad,
+  	  GST_DEBUG_FUNCPTR (gst_mprtcp_sender_rtcp_event));
+  gst_pad_set_query_function (mprtps->rtcp_sinkpad,
+      GST_DEBUG_FUNCPTR (gst_mprtcp_sender_rtcp_query));
+
+  GST_OBJECT_FLAG_SET (mprtps->rtcp_sinkpad, GST_PAD_FLAG_PROXY_CAPS);
+  gst_element_add_pad (GST_ELEMENT (mprtps), mprtps->rtcp_sinkpad);
+
+  mprtps->mprtcp_sinkpad = gst_pad_new_from_static_template (
+		  &gst_mprtp_sender_rtcp_sink_factory, "mprtcp_sink");
+  gst_pad_set_chain_function (mprtps->mprtcp_sinkpad,
+	  GST_DEBUG_FUNCPTR (gst_mprtcp_sender_mprtcp_chain));
+  gst_pad_set_event_function (mprtps->mprtcp_sinkpad,
+  	  GST_DEBUG_FUNCPTR (gst_mprtcp_sender_mprtcp_event));
+  gst_pad_set_query_function (mprtps->mprtcp_sinkpad,
+      GST_DEBUG_FUNCPTR (gst_mprtcp_sender_mprtcp_query));
+
+  GST_OBJECT_FLAG_SET (mprtps->mprtcp_sinkpad, GST_PAD_FLAG_PROXY_CAPS);
+  gst_element_add_pad (GST_ELEMENT (mprtps), mprtps->mprtcp_sinkpad);
+
+
+  mprtps->mprtcp_srcpad =
+  	gst_pad_new_from_static_template (&gst_mprtp_sender_mprtcp_src_factory,
+  	"mprtcp_src");
+    gst_pad_use_fixed_caps (mprtps->mprtcp_srcpad);
+    gst_pad_set_active (mprtps->mprtcp_srcpad, TRUE);
+    gst_element_add_pad (GST_ELEMENT_CAST (mprtps), mprtps->mprtcp_srcpad);
   /* srcpad management */
   mprtps->selected_subflow = NULL;
   gst_segment_init (&mprtps->segment, GST_FORMAT_UNDEFINED);
+  mprtps->latest_buffer = NULL;
   mprtps->subflows = NULL;
-  GstRTPBuffer rtpbuf_init =  GST_RTP_BUFFER_INIT;
-  mprtps->RTPBuffer = rtpbuf_init;
 
 
 }
@@ -187,7 +262,7 @@ gst_mprtp_sender_reset (GstMprtpSender * mprtps)
   MPRTPSenderSubflow *subflow;
   for(it = mprtps->subflows; it != NULL; it = it->next){
 	  subflow = (MPRTPSenderSubflow*) it->data;
-	  gst_object_unref(subflow);
+	  gst_object_unref(subflow->srcpad);
   }
   g_slist_free(mprtps->subflows);
   gst_object_unref(mprtps->selected_subflow);
@@ -209,8 +284,11 @@ gst_mprtp_sender_set_property (GObject * object, guint prop_id,
     const GValue * value, GParamSpec * pspec)
 {
   //GstMprtpSender *mprtps = GST_MPRTP_SENDER (object);
-
+  guint8* id;
   switch (prop_id) {
+  case PROP_RTP_EXT_ID:
+	  id = g_value_get_object (value);
+	  break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -233,11 +311,16 @@ gst_mprtp_sender_get_property (GObject * object, guint prop_id,
 static gboolean
 forward_sticky_events (GstPad * pad, GstEvent ** event, gpointer user_data)
 {
-  GstPad *srcpad = GST_PAD_CAST (user_data);
+  GstMprtpSender *mprtps = GST_MPRTP_SENDER(user_data);
+  MPRTPSenderSubflow *subflow;
+  GSList *item;
+  gboolean result = TRUE;
+  for(item = mprtps->subflows; item != NULL; item = item->next){
+	  subflow = (MPRTPSenderSubflow*) item->data;
+	  result &= gst_pad_push_event (subflow->srcpad, *event);
+  }
 
-  gst_pad_push_event (srcpad, *event);
-
-  return TRUE;
+  return result;
 }
 
 
@@ -252,7 +335,7 @@ GstPad* _request_mprtp_srcpad(GstElement * element,
 	guint16 subflow_id;
 
 	mprtps = GST_MPRTP_SENDER (element);
-
+    g_print("\n\nNEW MPRTP SRC PAD REQUESTED\n\n");
 	GST_DEBUG_OBJECT (mprtps, "requesting pad");
 	GST_OBJECT_LOCK (mprtps);
 
@@ -260,12 +343,12 @@ GstPad* _request_mprtp_srcpad(GstElement * element,
 	srcpad = gst_pad_new_from_template (templ, name);
 	subflow = _make_subflow(subflow_id, srcpad);
 	mprtps->subflows = g_slist_append(mprtps->subflows, subflow);
-
+	gst_object_ref(subflow->srcpad);
 	GST_OBJECT_UNLOCK (mprtps);
 	gst_pad_set_active (srcpad, TRUE);
 
 	/* Forward sticky events to the new srcpad */
-	gst_pad_sticky_events_foreach (srcpad, forward_sticky_events, srcpad);
+	gst_pad_sticky_events_foreach (mprtps->sinkpad, forward_sticky_events, mprtps);
 
 	gst_element_add_pad (GST_ELEMENT (mprtps), srcpad);
 
@@ -275,21 +358,6 @@ GstPad* _request_mprtp_srcpad(GstElement * element,
 	return srcpad;
 }
 
-static GstPad* _create_mprtcp_rr_sinkpad(GstElement * element,
-		GstPadTemplate * templ, const gchar * name, const GstCaps * caps);
-GstPad* _create_mprtcp_rr_sinkpad(GstElement * element,
-		GstPadTemplate * templ, const gchar * name, const GstCaps * caps)
-{
-	return NULL;
-}
-
-static GstPad* _create_mprtcp_sr_srcpad(GstElement * element,
-		GstPadTemplate * templ, const gchar * name, const GstCaps * caps);
-GstPad* _create_mprtcp_sr_srcpad(GstElement * element,
-		GstPadTemplate * templ, const gchar * name, const GstCaps * caps)
-{
-	return NULL;
-}
 
 static GstPad *
 gst_mprtp_sender_request_new_pad (GstElement * element,
@@ -304,10 +372,6 @@ gst_mprtp_sender_request_new_pad (GstElement * element,
   g_print("Requested pad name: %s", name);
   if(templ == gst_element_class_get_pad_template (klass, "mprtp_src_%u")){
 	  result = _request_mprtp_srcpad(element, templ, name, caps);
-  }else if(templ == gst_element_class_get_pad_template (klass, "mprtcpsr_src")){
-
-  }else if(templ == gst_element_class_get_pad_template (klass, "mprtcprr_sink")){
-
   }
 
   if(result == NULL){
@@ -330,6 +394,7 @@ gst_mprtp_sender_release_pad (GstElement * element, GstPad * pad)
 
   gst_element_remove_pad (GST_ELEMENT_CAST (mprtps), pad);
 }
+
 SchNode* _select_category(GstMprtpSender *mprtps, GstRTPBuffer *rtp)
 {
 	SchNode* selected = NULL;
@@ -350,6 +415,28 @@ _select_subflow_for_special_cases(GstMprtpSender * mprtps, GstRTPBuffer *rtp)
 	return result;
 }
 
+static void _send_segment_event(GstMprtpSender *mprtps, GstPad *outpad)
+{
+	GstSegment *seg;
+	GstEvent *ev;
+	gst_pad_sticky_events_foreach (mprtps->sinkpad, forward_sticky_events, outpad);
+
+	/* update segment if required */
+	if (mprtps->segment.format == GST_FORMAT_UNDEFINED) {
+		return;
+	}
+	/* Send SEGMENT to the pad we are going to switch to */
+	seg = &mprtps->segment;
+
+	ev = gst_event_new_segment (seg);
+
+	if (!gst_pad_push_event (outpad, ev)) {
+	GST_WARNING_OBJECT (mprtps,
+		"new segment handling failed in %" GST_PTR_FORMAT,
+		outpad);
+	}
+}
+
 //must be called with lock on mprtps and rtp must be mapped
 MPRTPSenderSubflow* _select_subflow(GstMprtpSender * mprtps, GstRTPBuffer *rtp)
 {
@@ -362,25 +449,26 @@ MPRTPSenderSubflow* _select_subflow(GstMprtpSender * mprtps, GstRTPBuffer *rtp)
 		GST_WARNING_OBJECT(mprtps, "No available category for subflows!");
 		return NULL;
 	}
-	if(gst_rtp_buffer_get_extension(rtp)){
-		result = _switch_subflow_in_schtree(mprtps, category);
+	if(!gst_rtp_buffer_get_marker(rtp)){
+		return result;
 	}
-
+	result = _switch_subflow_in_schtree(mprtps, category);
+	//resend segment
+	_send_segment_event(mprtps, result->srcpad);
 	return result;
 }
 //must be called with object lock, the category must not be null.
 MPRTPSenderSubflow* _switch_subflow_in_schtree (GstMprtpSender * mprtps, SchNode *category)
 {
-  SchNode *node;
+  SchNode *node = NULL;
   MPRTPSenderSubflow *result = NULL;
   gint8 count;
-  //GstEvent *ev = NULL;
-  //GstSegment *seg = NULL;
 
   /* Switch */
   GST_LOG_OBJECT (mprtps, "Select the next subflow in scheuling tree");
+
   //since there is a chance that the sum of the node target values is not equal to the max_tree
-  for(count = 0; result == NULL && count < 2; ++count){
+  for(count = 0; node == NULL && count < 2; ++count){
 	  node = _schtree_setnext(category);
   }
   if(G_UNLIKELY(node == NULL)){
@@ -415,13 +503,12 @@ gst_mprtp_sender_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
 	GstPad *outpad;
 
 	mprtps = GST_MPRTP_SENDER (parent);
-
-	GST_OBJECT_LOCK(mprtps);
+	GST_OBJECT_LOCK (GST_OBJECT (mprtps));
 
 	outbuf = gst_buffer_make_writable (buf);
 	if (G_UNLIKELY (!gst_rtp_buffer_map(outbuf, GST_MAP_READWRITE, &rtp))){
 		GST_WARNING_OBJECT(mprtps, "The RTP packet is not read and writeable");
-		GST_OBJECT_UNLOCK(mprtps);
+		GST_OBJECT_UNLOCK(GST_OBJECT (mprtps));
 		return GST_FLOW_ERROR;
 	}
 	//implement special case chooses here
@@ -430,26 +517,103 @@ gst_mprtp_sender_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
 	if(mprtps->selected_subflow == NULL){
 		GST_WARNING_OBJECT(mprtps, "The selected subflow is NULL");
 		gst_rtp_buffer_unmap(&rtp);
-		GST_OBJECT_UNLOCK(mprtps);
+		GST_OBJECT_UNLOCK(GST_OBJECT (mprtps));
 		return GST_FLOW_ERROR;
 	}
 
 	_extending_buffer(&rtp, mprtps->selected_subflow);
-	_print_rtp_packet_info(&rtp);
 	outpad = mprtps->selected_subflow->srcpad;
+	_print_rtp_packet_info(&rtp);
 	gst_rtp_buffer_unmap(&rtp);
-	GST_OBJECT_UNLOCK(mprtps);
-
 
 	if (!gst_pad_is_linked (outpad)) {
-	  GST_ERROR_OBJECT(mprtps, "The selected pad (%"GST_PTR_FORMAT")is not linked", outpad);
+	  GST_ERROR_OBJECT(mprtps, "The selected pad (%"GST_PTR_FORMAT") is not linked", outpad);
+	  GST_OBJECT_UNLOCK(GST_OBJECT (mprtps));
 	  return GST_FLOW_ERROR;
 	}
+
+	mprtps->latest_buffer = outbuf;
+	GST_OBJECT_UNLOCK(GST_OBJECT (mprtps));
 
 	GST_LOG_OBJECT (mprtps, "pushing buffer to subflow %d at %" GST_PTR_FORMAT" pad",
 	  mprtps->selected_subflow->id, outpad);
 
 	return gst_pad_push (outpad, outbuf);
+}
+
+
+static GstFlowReturn
+gst_mprtcp_sender_rtcp_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
+{
+	GstMprtpSender *mprtps;
+	GstRTCPBuffer rtcp = {NULL, };
+	gboolean more;
+	GstRTCPPacket packet;
+
+	if(!gst_rtcp_buffer_map (buf, GST_MAP_READ, &rtcp)){
+		GST_WARNING("The RTCP buffer is not readable");
+		return GST_FLOW_ERROR;
+	}
+
+	mprtps = GST_MPRTP_SENDER (parent);
+	GST_OBJECT_LOCK (GST_OBJECT (mprtps));
+
+	GST_MPRTCP_BUFFER_FOR_PACKETS (more, &rtcp, &packet); {
+	/* first packet must be SR or RR or else the validate would have failed */
+	switch (gst_rtcp_packet_get_type (&packet)) {
+	  case GST_RTCP_TYPE_SR:
+		//we extend the sender reports by adding the subflow informations.
+		GST_LOG_OBJECT(mprtps, "RTP Sender report is received and going to be nested into an MPRTCP packet.");
+		break;
+	  default:
+		/* we can ignore these packets */
+		break;
+	}
+	}
+	gst_rtcp_buffer_unmap (&rtcp);
+	GST_OBJECT_UNLOCK(GST_OBJECT (mprtps));
+
+	if (!gst_pad_is_linked (mprtps->mprtcp_srcpad)) {
+	  GST_ERROR_OBJECT(mprtps, "The MPRTCP sink is connected, but src is not");
+	  return GST_FLOW_ERROR;
+	}
+
+	GST_LOG_OBJECT (mprtps, "pushing mprtcp buffer to mprtcp srcpad");
+	return gst_pad_push (mprtps->mprtcp_srcpad, buf);
+}
+
+
+
+static GstFlowReturn
+gst_mprtcp_sender_mprtcp_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
+{
+	GstMprtpSender *mprtps;
+	GstRTCPBuffer rtcp = {NULL, };
+	gboolean more;
+	GstRTCPPacket packet;
+
+	if(!gst_rtcp_buffer_map (buf, GST_MAP_READ, &rtcp)){
+		GST_WARNING("The RTCP buffer is not readable");
+		return GST_FLOW_ERROR;
+	}
+
+	mprtps = GST_MPRTP_SENDER (parent);
+	GST_OBJECT_LOCK (GST_OBJECT (mprtps));
+
+	GST_MPRTCP_BUFFER_FOR_PACKETS (more, &rtcp, &packet); {
+	/* first packet must be SR or RR or else the validate would have failed */
+	switch (gst_rtcp_packet_get_type (&packet)) {
+	  case MPRTCP_PACKET_TYPE_IDENTIFIER:
+		//we extend the sender reports by adding the subflow informations.
+		GST_LOG_OBJECT(mprtps, "MPRTCP packet is going to be processed at MPRTP Sender proxy.");
+		break;
+	  default:
+		/* we can ignore these packets */
+		break;
+	}
+	}
+
+	return GST_FLOW_OK;
 }
 
 static GstStateChangeReturn
@@ -467,6 +631,7 @@ gst_mprtp_sender_change_state (GstElement * element,
     default:
       break;
   }
+
   result = GST_ELEMENT_CLASS (parent_class)->change_state (element, transition);
 
   switch (transition) {
@@ -487,15 +652,17 @@ gst_mprtp_sender_forward_event (GstMprtpSender* mprtps, GstEvent * event)
   GstPad *pad;
   MPRTPSenderSubflow *subflow;
   GSList *item;
+  g_print("gst_mprtp_sender_forward_event\n");
   for(item = mprtps->subflows; item != NULL; item = item->next){
 	  subflow = (MPRTPSenderSubflow*) item->data;
 	  pad = subflow->srcpad;
+	  g_print("Pushing event to srcpad %d\n", subflow->id);
 	  if(pad == NULL){
 		  continue;
 	  }
+
 	  result &= gst_pad_push_event (pad, event);
   }
-
   return result;
 }
 
@@ -525,7 +692,8 @@ gst_mprtp_sender_event (GstPad * pad, GstObject * parent, GstEvent * event)
     	  g_print("----%d----", GST_EVENT_TYPE(event));
     	  //result = gst_pad_event_default (pad, parent, event);
     	  //g_print("%d",result);
-    	  result = gst_pad_push_event(mprtps->selected_subflow->srcpad, event);
+    	  //result = gst_pad_push_event(mprtps->selected_subflow->srcpad, event);
+    	  result = gst_mprtp_sender_forward_event (mprtps, event);
     	  g_print("%d\n",result);
         break;
   }
@@ -537,18 +705,101 @@ static gboolean
 gst_mprtp_sender_query (GstPad * pad, GstObject * parent, GstQuery * query)
 {
   gboolean res = TRUE;
-//  GstMprtpSender *sel;
-//  GstPad *active = NULL;
+  GstMprtpSender *mprtps;
+  GstPad *srcpad = NULL;
+  MPRTPSenderSubflow *subflow;
+  GSList *item;
 
-//  sel = GST_MPRTP_SENDER (parent);
+  mprtps = GST_MPRTP_SENDER (parent);
 
   switch (GST_QUERY_TYPE (query)) {
+  	case GST_QUERY_CAPS:
     default:
-      res = gst_pad_query_default (pad, parent, query);
+	for(item = mprtps->subflows; item != NULL; item = item->next){
+		  subflow = (MPRTPSenderSubflow*) item->data;
+		  srcpad = subflow->srcpad;
+		  if(srcpad == NULL){
+			  continue;
+		  }
+		  res &= gst_pad_peer_query (srcpad, query);
+		  //g_print("QUERYsrcpad->padtemplate->name_template
+	  }
+      //res = gst_pad_proxy_query_caps (pad, query);
+      //res = gst_pad_query_default (pad, parent, query);
       break;
   }
 
   return res;
+}
+
+
+gboolean
+gst_mprtcp_sender_rtcp_event (GstPad * pad, GstObject * parent, GstEvent * event)
+{
+  GstMprtpSender *mprtps;
+
+  mprtps = GST_MPRTP_SENDER (parent);
+
+  return gst_pad_push_event (mprtps->mprtcp_srcpad, event);
+}
+
+gboolean
+gst_mprtcp_sender_rtcp_query (GstPad * pad, GstObject * parent, GstQuery * query)
+{
+	GstMprtpSender *mprtps;
+
+	mprtps = GST_MPRTP_SENDER (parent);
+
+	return gst_pad_peer_query (mprtps->mprtcp_srcpad, query);
+}
+
+
+gboolean
+gst_mprtcp_sender_mprtcp_event (GstPad * pad, GstObject * parent, GstEvent * event)
+{
+  return FALSE;
+}
+
+gboolean
+gst_mprtcp_sender_mprtcp_query (GstPad * pad, GstObject * parent, GstQuery * query)
+{
+   return FALSE;
+}
+
+
+
+GstIterator *
+gst_mprtp_sender_iterate_internal_links (GstPad * pad, GstObject * parent)
+{
+  GstMprtpSender *mprtps;
+  GstPad *otherpad = NULL;
+  GstIterator *it = NULL;
+
+  mprtps = GST_MPRTP_SENDER (parent);
+
+  GST_OBJECT_LOCK(GST_OBJECT (mprtps));
+  if (pad == mprtps->mprtcp_sinkpad) {
+    otherpad = gst_object_ref (mprtps->mprtcp_sinkpad);
+  } else if (pad == mprtps->rtcp_sinkpad) {
+    otherpad = gst_object_ref (mprtps->rtcp_sinkpad);
+  } else if (pad == mprtps->mprtcp_srcpad) {
+	otherpad = gst_object_ref (mprtps->mprtcp_srcpad);
+  }
+  GST_OBJECT_UNLOCK(GST_OBJECT (mprtps));
+
+  if (otherpad) {
+    GValue val = { 0, };
+
+    g_value_init (&val, GST_TYPE_PAD);
+    g_value_set_object (&val, otherpad);
+    it = gst_iterator_new_single (GST_TYPE_PAD, &val);
+    g_value_unset (&val);
+    gst_object_unref (otherpad);
+  } else {
+    it = gst_iterator_new_single (GST_TYPE_PAD, NULL);
+  }
+
+  return it;
 }
 
 
@@ -569,6 +820,7 @@ MPRTPSenderSubflow* _make_subflow(guint16 id, GstPad* srcpad)
 	result->id = id;
 	result->srcpad = srcpad;
 	result->congestion = MPRTP_SUBFLOW_NON_CONGESTED;
+	result->initiated = FALSE;
 	return result;
 }
 
@@ -672,6 +924,7 @@ SchNode* _schtree_build(GSList* subflows, MPRTP_Congestion congestion)
 		}else{
 		  target = ((gfloat)subflow->bw / (gfloat)bw_sum) * tree_max;
 		}
+
 		root = _schtree_insert(subflow, root, &target, tree_max);
 	}
 	return root;
@@ -722,9 +975,9 @@ void _print_rtp_packet_info(GstRTPBuffer *rtp)
    "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
    "|%3d|%1d|%1d|%7d|%1d|%13d|%31d|\n"
    "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
-   "|%63lu|\n"
+   "|%63u|\n"
    "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
-   "|%63lu|\n",
+   "|%63u|\n",
 			gst_rtp_buffer_get_version(rtp),
 			gst_rtp_buffer_get_padding(rtp),
 			extended = gst_rtp_buffer_get_extension(rtp),
@@ -741,7 +994,6 @@ void _print_rtp_packet_info(GstRTPBuffer *rtp)
 		guint8 *pdata;
 		guint wordlen;
 		gulong index = 0;
-		guint count = 0;
 
 		gst_rtp_buffer_get_extension_data (rtp, &bits, (gpointer) & pdata, &wordlen);
 

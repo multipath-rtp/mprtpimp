@@ -16,7 +16,7 @@ LATENCY=100
 
 gst-launch-1.0 --gst-debug-level=3 mprtpreceiver name=mprtpr rtpbin name=rtpbin latency=$LATENCY                      \
            udpsrc caps=$VIDEO_CAPS port=5000 ! rtpbin.recv_rtp_sink_0                                \
-	         rtpbin. ! mprtpr.mprtp_sink_1 mprtpr.mprtp_src ! $VIDEO_DEC ! $VIDEO_SINK           \
+	         rtpbin. ! $VIDEO_DEC ! $VIDEO_SINK           \
            udpsrc port=5001 ! rtpbin.recv_rtcp_sink_0                                                \
            rtpbin.send_rtcp_src_0 ! udpsink host=$DEST port=5005 sync=false async=false
  
